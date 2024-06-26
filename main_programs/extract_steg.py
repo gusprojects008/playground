@@ -40,13 +40,13 @@ def extract_img(path):
                  file_result.write(f"Basic Data:\n{exif_data.stdout.decode('utf-8')}\n")
                  file_result.write(f"Info Image:\n{info_img.stdout}\n")
 
+                 file_result.write(f"Hex content:\n{hex_content_img.stdout}\n")
                  file_result.write(f"Hex content:\n")
+
                  for char in hex_content_img.stdout:
                      if char.isalpha():
-                        file_result.write(char)
+                         file_result.write(char)
                  file_result.write("\n")
-
-                 file_result.write(f"Hex content:\n{hex_content_img.stdout}\n")
                   
               except Exception as error:
                      print(f"{flags.error} Opss an error ); {colors.bright}{str(error)}{colors.bright}")
