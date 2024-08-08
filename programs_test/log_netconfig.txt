@@ -1,2 +1,0 @@
-
- Error => Command '['pip', 'install', 'netifaces', 'scapy', 'ipaddress', 'wifi']' returned non-zero exit status 1.

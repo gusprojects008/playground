@@ -6,7 +6,7 @@ from scapy.sendrecv import sendp, srp1, send, srp, sr1
 
 def dhcp_discover():
 
-    mac_address = 'a4:f9:33:ed:5b:75'
+    mac_address = '86:94:7a:42:a1:9d'
     mac_broadcast = 'ff:ff:ff:ff:ff:ff'
     mac_router = '78:8c:b5:32:68:e0'
 
