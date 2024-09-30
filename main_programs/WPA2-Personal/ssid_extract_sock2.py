@@ -35,7 +35,7 @@ def dissec_packet(packet):
     length_packet = len(packet_hex)
     radiotap_length = int(packet_hex[4:6], 16)
 #    data_field = packet_hex[]
-    frame_control = packet_hex[radiotap_length*2:150]
+    frame_control = packet_hex[radiotap_length*2:radiotap_length*2+4]
 
     try:
        length_ssid = int(packet_hex[radiotap_length+21*2:], 16)
@@ -46,8 +46,11 @@ def dissec_packet(packet):
     else:
         ssid = None
     
-    if len(packet) > 250 and len(packet) < 500 and radiotap_length == 56:
-       return f"Length PacketHex: {len(packet_hex)}, Radiotap Length: {radiotap_length}, Frame Control: {frame_control}, Length ssid: {length_ssid}, SSID: {ssid}, Hex Data: {packet_hex}, Packet UTF-8: {bytes.fromhex(packet_hex).decode('utf-8', errors='ignore')}\n"
+    if len(packet) < 250:
+       return f"Dissec Packet HEX:\nLength PacketHex: {len(packet_hex)}, Radiotap Length: {radiotap_length}, Frame Control: {frame_control}\nHex Data: {packet_hex}\nPacket UTF-8: {bytes.fromhex(packet_hex).decode('utf-8', errors='ignore')}\n" 
+
+    #if len(packet) > 250 and len(packet) < 500 and radiotap_length == 56: 
+       #return f"Dissec Packet HEX:\nLength PacketHex: {len(packet_hex)}, Radiotap Length: {radiotap_length}, Frame Control: {frame_control}, Length ssid: {length_ssid}, SSID: {ssid}, Hex Data: {packet_hex}, Packet UTF-8: {bytes.fromhex(packet_hex).decode('utf-8', errors='ignore')}\n"
      
 #    if frame_control == '8000':
 #       packet_beacon = {
