@@ -34,23 +34,22 @@ def dissec_packet(packet):
     packet_hex = packet.hex()
     length_packet = len(packet_hex)
     radiotap_length = int(packet_hex[4:6], 16)
-#    data_field = packet_hex[]
     frame_control = packet_hex[radiotap_length*2:radiotap_length*2+4]
 
     try:
-       length_ssid = int(packet_hex[radiotap_length+21*2:], 16)
-    except ValueError:
-           length_ssid = None
-    if length_ssid is not None:
-       ssid = packet_hex[200:200+4+length_ssid*2]
-    else:
-        ssid = None
-    
-    if len(packet) < 250:
-       return f"Dissec Packet HEX:\nLength PacketHex: {len(packet_hex)}, Radiotap Length: {radiotap_length}, Frame Control: {frame_control}\nHex Data: {packet_hex}\nPacket UTF-8: {bytes.fromhex(packet_hex).decode('utf-8', errors='ignore')}\n" 
+       try:
+          length_ssid = int(packet_hex[radiotap_length*2+74:radiotap_length*2+74+2], 16)
+       except ValueError:
+              length_ssid = int(packet_hex[radiotap_length*2+74:radiotap_length*2+74+2])
+       ssid = packet_hex[radiotap_length*2+74+2:radiotap_length*2+74+2+length_ssid*2]
+    except ValueError as error:
+           length_ssid = error
+           ssid = "None or Hidden"
+    #if len(packet) < 250:
+     #  return f"Dissec Packet HEX:\nLength PacketHex: {len(packet_hex)}, Radiotap Length: {radiotap_length}, Frame Control: {frame_control}\nHex Data: {packet_hex}\nPacket UTF-8: {bytes.fromhex(packet_hex).decode('utf-8', errors='ignore')}\n" 
 
-    #if len(packet) > 250 and len(packet) < 500 and radiotap_length == 56: 
-       #return f"Dissec Packet HEX:\nLength PacketHex: {len(packet_hex)}, Radiotap Length: {radiotap_length}, Frame Control: {frame_control}, Length ssid: {length_ssid}, SSID: {ssid}, Hex Data: {packet_hex}, Packet UTF-8: {bytes.fromhex(packet_hex).decode('utf-8', errors='ignore')}\n"
+    if len(packet) > 250 and len(packet) < 500 and radiotap_length == 56 and (frame_control == '8000' or frame_control == '5000'): 
+       return f"Dissec Packet HEX:\nLength Packet bytes: {len(packet)}\nRadiotap Length bytes: {radiotap_length}\nFrame Control: {frame_control}\nLength ssid: {length_ssid}\nSSID: {ssid} {bytes.fromhex(ssid).decode('utf-8', errors='ignore')}\nHex Data: {packet_hex}\nPacket UTF-8: {bytes.fromhex(packet_hex).decode('utf-8', errors='ignore')}\n"
      
 #    if frame_control == '8000':
 #       packet_beacon = {
