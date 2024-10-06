@@ -1,0 +1,2 @@
+
+ Error => Command '['pacman', '-Syu', '--noconfirm', 'iwd']' returned non-zero exit status 1.

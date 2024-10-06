@@ -1,9 +1,10 @@
 WPA2-Personal PROTOCOLO DE REDE
+
 O WPA2 USA ALGORITIMOS DE CRIPTOGRAFIA COMO O AES-CCMP
 Advanced Encriptation Standard - Counter Mode with Cipher Block Chaining Message Authentication Code Protocol
 AES é um algortimo de encriptação de dados avançado e CCMP é o protocolo que garante que os dados irão ser
 trocados de forma segura e criptogrfada utilizando o AES e algoritimos de checksum para os pacotes, assim 
-garantindo a integridade dos dados
+garantindo a integridade dos dados.
 
 A Autênticação acontece através de aperto de mão de 4 vias, ou seja acontece uma troca de 4 pacotes entre
 o cliente e roteador no momento da autenticação, nessa troca de 4 pacotes acorre toda uma troca de informações
@@ -54,3 +55,79 @@ KEYSTREAM USADA PARA CRIPTOGRAFAR O CONTEUDO DO PACOTE.
 ISSO ACONTECE ATRAVÉS DE UMA OPERAÇÃO XOR ENTRE A KEYSTREAM E O DADOS DO PACOTE ASSIM TRANSFORMANDO OS DADOS
 EM TEXTO EMBARALHADO ILEGIVEL PARA QUEM NÃO POSSUI A CHAVE DE CRIPTOGRAFIA PARA FAZER O PROCESSO INVERSO
 PARA VER O CONTEUDO ORIGINAL 
+
+
+WPA2-Personal - Protocolo de Rede
+O WPA2 usa algoritmos de criptografia como o AES-CCMP
+(Advanced Encryption Standard - Counter Mode with Cipher Block Chaining Message Authentication Code Protocol).
+
+AES é um algoritmo de criptografia de dados avançado e CCMP é o protocolo que garante que os dados sejam trocados de forma segura 
+e criptografada, utilizando o AES e algoritmos de checksum para os pacotes, garantindo assim a integridade dos dados.
+
+ALGORTIMOS USADOS NO WPA2 Personal AES-CCMP:
+Criptografia de pacotes: AES(algortimo de encriptação avançada, usado para encriptar os payloads dos pacotes a partir de chaves criptograficas entre
+128 bits a 512 bits)
+
+ALGORITMOS USADOS PARA GERAÇÃO DE CHAVES E FUNÇÕES HASH:
+HMAC-SHA1 = HMAC(Hash-based Message Authentication Code)-SHA1(Secure Hash Algorithm 1)  
+HMAC-MD5 = HMAC(Hash-based Message Authentication Code)-(Message Digest Algorithm 5)
+
+Diferença entre PRF E HASH:
+PRF: Recebe uma chave secreta e outros valores, e resulta em um valor psudo aleatorio que é determinado
+a partir dos valores de entrada
+
+HASH: Gera um valor fixo a partir de um valor de entrada, o valor fixo gerado é um resumo do valor de entrada
+de forma não pseudo aleatoria e não depende de uma chave secreta. 
+
+
+CCMP: O CCMP junto com o AES, utiliza chaves de 128 bits para através do algoritimo de criptografia AES
+criptografar cada bloco de dados de um tamanho especifico(CTR(Counter Mode)).
+E CBC-MAC(Cipher block Chaining Message Authentication Code) Tecnica usada para garantir a integridade
+e autenticidade da mensagem enviada, Ele gera um código de autenticação para cada mensagem enviada através
+do algoritmo AES a partir de valores:
+O MIC é o resultado de uma função hash
+MIC = HMAC-SHA1 OU HMAC-MD5 OU OUTRO ALGORITMO PRF(KCK + Payload)
+O payload são as informações do pacote em si, mas são usadas as informações:
+Versão EAPOL
+Tipo do pacote
+comprimento total do payload
+Replay counter
+Anonce + Cnonce
+campo gtk
+
+A autenticação acontece através do handshake de 4 vias, ou seja, uma troca de 4 pacotes entre o cliente e o roteador no momento da 
+autenticação. Nessa troca, são negociadas informações para a criação de chaves criptográficas usadas para criptografar e 
+proteger a comunicação.
+
+Várias informações sobre a rede, dispositivos e roteador são trocadas, mas as informações principais usadas para a criação das chaves
+são os endereços MAC, nonces e SSID.
+
+A maioria das chaves utiliza o algoritmo de hash HMAC-SHA1 para gerar as chaves a partir das informações trocadas.
+
+Chaves usadas para garantir a segurança do protocolo:
+
+PSK(Pré-Shared Key): É derivada da passphrase usada para se conectar na rede e o SSID. Ela é gerada através da
+função PBKDF2 assim gerando a psk usada para fazer operações criptograficas e derivação de outras chaves de 
+criptografia. PBKDF2(senha da rede(8 a 63 chars), SSID, iter=4096) E FUNÇÃO HASH HMAC-SHA1.
+A PSK resultante possui possui 256 bits no WPA2 PERSONAL. A PSK É O MESMO QUE A PMK NO WPA2 PERSONAL.
+
+PTK (Pairwise Transient Key): É a chave de criptografia usada para proteger a comunicação entre o dispositivo cliente e o roteador. Ela
+é derivada da PMK junto com os nonces trocados no handshake e os endereços MAC do cliente e do roteador, utilizando uma função PRF
+(Pseudo-Random Function) com o algoritmo HMAC-SHA1.
+A PTK possui 512 bits e, dela, são extraídas três chaves de 128 bits, cada uma com uma função específica:
+PTK = PRF(HMAC-SHA1 OU HMAC-MD5 OU OUTRO ALGORITMO PRF)(PMK + "Pairwise key expansion" + ApMAC + CMac + ApNonce + SNonce)
+
+KEK (Key Encryption Key): Usada pelo roteador para criptografar e transmitir uma chave importante, como a GTK.
+TK (Temporal Key): Usada para criptografar a comunicação unicast com o roteador.
+KCK (Key Confirmation Key): Usada para garantir a integridade do handshake, gerando o MIC (Message Integrity Code) para cada pacote
+do handshake.
+
+Os outros 128 bits da PTK são usados para outras funções, dependendo da rede.
+
+GTK (Group Temporal Key): Usada para criptografar o tráfego broadcast e multicast da rede. Ela é partilhada por todos os dispositivos
+conectados à rede e é derivada da GMK (Group Master Key), que é gerada aleatoriamente pelo roteador.
+
+Protocolo WEP (Wired Equivalent Privacy):
+No WEP, o vetor de inicialização (IV) é composto por 24 bits aleatórios + a chave candidata. Esses dois valores são concatenados e passados
+para o algoritmo RC4, que gera um keystream usado para criptografar o conteúdo do pacote.
+A criptografia é feita através de uma operação XOR entre o keystream e os dados do pacote, resultando em texto cifrado.
