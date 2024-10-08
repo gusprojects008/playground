@@ -8,12 +8,3 @@ COMO FUNCIONA A CONTAGEM DO BYTE:
 
 VOCÊ PEGA O PRIMEIRO BIT COMEÇANDO A CONTAGEM DA DIREITA, MULTIPLICA O BIT POR
 2 ELAVADO A ORDEM DO BIT E ASSIM OBTEM O RESULTADO DO VALOR DO BIT:
-
-
-         							
-	1  	0 	 1 	 0 	 0 	 0 	 1 	 0
-							    1	     0
-							1 * 2 	0 * 2		 
-							1 * 2 = 2 0 * 1 = 0
-
-4 + 0 + 
