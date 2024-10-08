@@ -1,0 +1,20 @@
+O QUE É O SISTEMA BINÁRIO? E COMO ELE FUNCIONA?
+ENTENDA FACILMENTE COMO FUNCIONA O SISTEMA BINÁRIO E COMO ELE TRABALHA NO COMPUTADOR:
+No mundo da computação, os computadores trabalham e funcionam apenas com bits e bytes do sistema binário.
+Mas como funciona o sistema binário? e por que o computador entende e usa apenas ele?
+Os computadores usam o sistema binário, por conta que ele é eficiente, rápido, e confiável. Pois ele precisa receber apenas 2 tipos de informações, 0 ou 1.
+Outro principal motivo é porque ele é de facil entendimento para o funcionamento dos circuitos eletrônicos, na parte do hardware do computador, lá é onde ocorre todo processamento dos bits e dos bytes, que são os sinais elétricos que faz o computador executar operações com base neles.
+Os bits e os bytes são também as Informações que enviamos ao computador, por meio de dispositivos de entrada de dados: teclado, mouse entre outros.
+As informações de resposta do computador, são traduzidas e convertidas, por meio de algoritimos como: UTF-8. Para assim entendermos as informações na forma que conhecemos.
+Para a manipulação dos bits nos circuitos eletrônicos, são usados diversos tipos de componentes eletrônicos, cada um com um material específico que pode conduzir ou não conduzir os sinais elétricos(bits e bytes).
+Com a manipulação deles, torna possível criar circuitos logicos para realizar diversos tipos de operações.
+Um Sistema decimal significa que, ele é um sistema numérico composto por 10 algarismos: 0 1 2 3 4 5 6 7 8 9.
+O Sistema binário significa que, ele é um sistema númerico composto por 2 algarismos 0 e 1.
+Ambos os sistemas possuem uma lógica certa, para o funcionamento.
+Assim como o sistema decimal e binário, todo sistema númerico segue uma ordem lógica e precisa, exemplo:
+fonte: euEsse é um exemplo básico e simples do sistema decimal, você multiplica o número por 10 elevado a ordem do número que você está multiplicando.
+observação: a ordem sempre começa da direita para esquerda começando sempre pelo 0.
+Leia com calma que ficara bem mais simples!
+Com ele é possível obter infinitos valores númericos, Assim como o sistema binário.
+O sistema binário funciona da mesma forma, mas apenas multplicando os bits 0 e 1 por, 2 elevado a ordem do bit, começando também da direita para esquerda e pelo 0. Exemplo:
+No fim você básicamente multplica o bit por 2 elevado a ordem do bit, sempre começando a contar a ordem do bit, pelo zero e da direita para esquerda.

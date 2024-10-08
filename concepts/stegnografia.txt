@@ -1,0 +1,55 @@
+ENTENDA CONCEITOS BÁSICOS SOBRE ESTEGANOGRAFIA EM ARQUIVOS:
+
+A esteganografia é uma técnica para ocultar uma mensagem, como senhas, links, arquivos ou outras informações confidenciais, dentro de outro arquivo, geralmente uma imagem.
+
+Mas o que é uma imagem? Na verdade, uma imagem é um grande conjunto de dados binários, composto por 0s e 1s, formando uma grande matriz. Esses dados definem os valores de cada pixel na grade de pixels.
+
+Cada pixel normalmente possui 3 bytes e cada byte possui um valor de 0 a 255, representando o nível de tom das cores RGB do pixel (vermelho, verde, azul). Combinando e misturando cada pixel com um tom diferente, é possível formar uma imagem.
+
+As extensões de arquivo são responsáveis por definir como o sistema operacional deve ler, processar e executar programas através da CPU e dos diversos componentes do computador. Elas também auxiliam o sistema operacional a identificar com qual programa deve abrir e manipular os arquivos.
+
+Isso se aplica a imagens, vídeos e todo o conteúdo do seu computador. As imagens possuem diversas extensões e formatos, cada um com suas características específicas, como leveza, alta ou baixa qualidade, entre outros aspectos.
+
+As extensões de imagens mais comuns são:
+
+    JPEG/JPG: Formato de imagem que pode reduzir o tamanho dos bytes por meio da compactação, com uma ligeira perda de qualidade.
+    PNG: Formato de imagem que mantém a qualidade original, resultando em um tamanho de arquivo maior.
+Neste blog, não vou explicar detalhadamente sobre os algoritmos dos formatos de imagem como JPEG e PNG, mas deixarei os links explicando sobre os algoritmos JPEG/JPG e PNG:
+
+    Algoritmo JPEG/JPG: https://pt.wikipedia.org/wiki/JPEG#Algoritmo
+    Algoritmo PNG: https://pt.wikipedia.org/wiki/PNG#Funcionamento
+
+Basicamente, os dados da imagem são organizados e processados de acordo com os diferentes tipos de formato de extensão de imagem. O computador identifica o formato da imagem e a decodifica corretamente conforme sua extensão e formato (jpg, png, etc…) através do processador (CPU), e renderiza os pixels e suas sombras no monitor através da GPU, exibindo finalmente a imagem na tela.
+
+Esta é apenas uma forma de explicar os processos básicos de como o computador processa sua imagem. Então, o que são metadados e para que servem?
+
+EXIF(Exchangeable Image File Format) é o formato padrão responsável por armazenar e atribuir dados básicos a uma imagem, como a data e hora em que a imagem foi criada, localização, origem, nome da câmera, entre outros. “Dados EXIF” são conhecidos como metadados e são usados para diversos fins, como forense e programas de organização de fotos (galeria, Google Fotos), etc.
+
+Com isso, é possível adicionar informações às imagens, extraí-las, substituí-las ou excluí-las, manipulando os metadados EXIF de uma imagem Através de programas como imageMagic, exiftool, binwalk, steghide, stegseek entre outros é possível interagir com os metadados da imagem, extraindo, colocando, substituindo ou deletando, vou mostrar como extrair os metadados e informações sobre a imagem com as ferramentas citadas e agilizando este processo com python:
+
+No exemplo que dei acima, com Exiftool e binwalk em modo detalhado (-v), é possível extrair informações como: A assinatura única do arquivo chamada HASH, e MD5 Checksum é o algoritmo utilizado para gerar o Hash do arquivo,, Este informação É útil principalmente quando você precisa saber se a imagem que possui é original e não uma cópia.
+Em alguns casos o binwalk pode localizar ou informar quando a imagem possui um arquivo ocultado propositalmente e através do setghide ou stegseek é possível extrair este arquivo.
+
+Com o exiftool é possível obter os metadados Exif da imagem como o nome do Autor/proprietário da imagem, latitude e longitude do local de origem da imagem e posição GPS de quando a foto foi criada.
+Mas isso não é tudo, é sempre bom analisar o conteúdo do hexadecimal da imagem:
+
+através da ferramenta xxd é possível extrair o conteúdo hexadecimal e direcionar o resultado de saída para um arquivo criado no mesmo momento.
+
+Pegando apenas uma parte do conteudo Hexadecimal da imagem é possivel obter algumas informações como links de dominios e informações Exif, e pela forma que a informação está organizada pode-se chegar a conlusão de que ela foi adicionada propositalemente.
+
+Com o python é possivel Automatizar Esse processo:
+
+Ele executa os comandos que mostrei e direciona todo o resultado para um único arquivo de texto.
+
+Esse é um exemplo simples de extração de metadados de uma imagem, em alguns casos será preciso fazer uma análise mais detalhadas e minuciosas através de ferramentas mais avançadas.
+
+Assim como o EXIF existem outros formatos de metadados para outros tipos de arquivo, exemplo:
+
+ID3: Formato de matadados padrão para arquivos de audio
+
+IPTC: Formato de metadados padrão para Arquivos de Midia como imagens e videos
+
+XMP: Formato de armazenamento de metadados usado em varios tipos de arquivos
+
+Existem ainda varios outros formatos de metadados para varios tipos de arquivo, e muitas formas de extrair e manipular eles dependendo de cada ocasião.
+

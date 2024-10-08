@@ -1,0 +1,52 @@
+COMO FUNCIONA UMA VPN(REDE VIRTUAL PRIVADA)?
+
+A VPN(Rede Virtual Privada) é utilizada em diversos cenários. Por exemplo, quando você trabalha remotamente para uma empresa e precisa acessar a rede privada dela; ou quando você precisa acessar um conteúdo restrito e disponível apenas em um lugar específico no mundo; e também quando você precisa proteger sua comunicação contra alguém que queria ver as informações que você envia ou acessa pela internet. Para isso existe o servidor vpn que é uma máquina que está conectada à uma rede privada que está ligada a um provedor de serviço de internet (ISP) localizado em algum lugar do mundo. através de um túnel de comunicação com um servidor VPN remoto em uma rede privada, todo o seu tráfego de rede é passado diretamente para o servidor vpn antes de ser enviado para a internet pública. Assim, o servidor vpn pode criptografá-lo antes de ser enviado para a internet, impedindo que alguém intercepte sua comunicação com a internet pública, como sites, servidores dns e outras máquinas remotas no mundo. dessa forma, você estará se comunicando com a internet através de uma máquina remota que está em uma rede privada que, a partir dela, irá encaminhar todas as suas solicitações, requisições e informações para a internet, e receberá todas as respostas da internet e enviará diretamente a você. Isso resulta na mudança do seu endereço ip público Original da sua máquina, para o endereço ip do servidor VPN pois você estara usando ele para se comunicar com a internet. possibilitando mais segurança e privacidade, pois você estará se comunicando com a internet a partir de um servidor vpn que irá receber, criptografar e encaminhar suas informações para a internet pública. por isso, é importante conectar-se e usar um servidor vpn confiável, seguro e adequado ao seu propósito de uso. Existem diversos protocolos de comunicação e conexão com servidores VPN para serem usados em diferentes cenários, cada protocolo possui suas características, vantagens e desvantagens. Exemplos são:
+
+OpenVPN: O OpenVPN Não é um protocolo em si, mas um software que possibilita você se conectar a um servidor VPN de forma segura utilizando os protocolos de comunicação e segurança do modelo osi e tcp/ip. O protocolo de conexão, comunicação e segurança com o servidor vpn pode variar, mas os principais são:
+
+TCP/IP(Protocolo de Controle de Transmissão/Protocolo de Internet): È um conjunto de protocolos de comunicação e transporte de dados baseado em conexão com a máquina destino, essa conexão pode ser feita através de diversas formas, utilizando, por exemplo: sockets de comunicação entre cliente e servidor, TCP handshake(aperto de mão) entre outros.
+
+UDP(Protocolo de Datagrama de Usuario): Udp um protocolo de comunicação de envio de dados que não é baseado em conexão com a maquina destino, com isso ele se torna um protocolo de envio de dados mais rápido mas pouco confiável sobre a integridade dos dados enviados pois ele não é baseado em uma conexão direta com o maquina destino para a troca de dados então pode acontecer perca de pacotes e dados enviados para maquina destino.
+
+SSL/TLS(Camada de Socket Segura/Camada de Transporte Segura): São protocolos de segurança usados em conexões e comunicações entre máquinas, utilizados principalmente para autenticação e criptografia dos dados trocados, protegendo contra adulterações dos dados trocados e interceptações de outras pessoas, garantindo mais confiabilidade na conexão e comunicação com a máquina destino.
+
+COM ESSES PROTOCOLOS E OUTROS QUE NÃO CITEI, PODE-SE CRIAR DIVERSOS OUTROS PROTOCOLOS DE COMUNICAÇÃO E CONEXÃO COM SERVIDORES VPN E PROTEGER AINDA MAIS SUA COMUNICAÇÃO E CONEXÃO COM A INTERNET.
+
+____________________________________________________________________________________________________________
+
+REPRESENTATION COMMUNICATION WITH VPN SERVER AND INTERNET!:
+
+YOUR SOCKET                      SERVER VPN                                 ____________
+LOCAL FOR CO                     WAITING FOR                                |          |
+MMUNICATION A                    CONNECTIONS                                |          |
+ND CONNECTION,                   IN HIM, EXE                                |          |
+EXEMPLE:                         PLE:                                       |          |
+IP: 192.168.0.196                IP: 192.142.253.172                        | SERVERS  |
+PORT: 3653                       PORT: 8080                                 | AND ALL  |
+              COMMUNICATION                               PACKET            | INTERNET |
+ _____      => => => => => =>      __________           ___________         | PUBLIC!!!|
+| YOU | CONNECT TO THE VPN SERVER |VPN SERVER|         |INFORMATION|        |          |
+|_   _|     <= <= <= <= <= <=     |_        _|   → → → |___________|  → → → |          |
+ |   |        COMMUNICATION         |      |                                |          |
+-------                           ------------                              |__________| 
+
+____________________________________________________________________________________________________________
+
+
+Provedores de serviços de internet são usados para direcionar informações corretamente para outros servidores, como servidores DNS (Servidor de Nomeamento de Domínio usado para armazenar nomes de domínio de servidores na internet, por exemplo: example.com, para você chegar ao servidor exemplo.com seu provedor de internet recebe sua solicitação através do roteador e modem e meios de comunicação, e busca o domínio no servidor DNS associado a ele, e retorna site do domínio do servidor como resposta da sua busca se ele estiver disponível no servidor DNS consultado. No contexto da VPN: Você se conecta à rede virtual privada do servidor criando um túnel de comunicação entre você e o servidor VPN. Então você envia as informações para o servidor VPN e elas são passadas diretamente para o servidor VPN sem o contato do seu provedor de original. O servidor VPN criptografa e encaminha as informações para o ISP do servidor VPN. A rota do ISP do servidor VPN pode variar, mas como exemplo, o ISP do servidor VPN direciona suas informações para o servidor DNS e verifica se existe o domínio. A forma de enviar as informações de resposta para o seu computador é feita por inversão. As informações de resposta do servidor DNS são enviadas para o ISP do servidor VPN e assim enviadas para o servidor VPN, e do servidor VPN para sua máquina, de maneira segura usando verificação de pacotes, autenticação e criptografia. No fim, você usa apenas a internet do seu provedor para se conectar ao servidor VPN.
+OUTROS PROTOCOLOS E MÉTODOS DE PROTEÇÃO E CONEXÃO USADOS POR SERVIDORES VPN:
+PROTOCOLO IPsec(Protocolo de Segurança de Internet ou Internet Protocol Security)
+
+IPsec(Protocolo de Segurança de Internet ou Internet Protocol Security): É um conjunto de protocolos e padrões de segurança para conexão e comunicação entre uma maquina e outra e a internet, usando métodos de autenticação e criptografia baseados em protocolos como:
+
+AH(Autenticação de Cabeçalhos): Garante autenticação e integridade dos dados Trocados, utilizando técnicas de hash para criar um valor fixo único baseado nos dados originais e os metadados deles, para no fim calcular e comparar os valores hash dos dados originais e os dados recebidos e assim fornecendo segurança contra modificações dos dados em transmissão.
+
+ESP(Carga de Segurança Encapsulada): Fornece Autenticação, integridade e confiabilidade dos dados trocados, criptografando os pacotes de dados para proteger o conteúdo.
+
+IKE(Troca de Chaves da Internet): Protocolo usado para gerenciar a negociação, estabelecimento e troca de chaves criptográficas e autenticação, facilitando uma conexão segura entre as máquinas.
+
+ESSES TRÊS PROTOCOLOS TRABALHAM EM CONJUNTO PARA PROTEGER SUA COMUNICAÇÃO COM O SERVIDOR VPN E A INTERNET ATRAVÉS DO PROTOCOLO IPsec.
+PROTOCOLO P2P(Pessoa Para Pessoa)
+
+P2P(Peer-to-Peer): O protocolo P2P é uma forma descentralizada de comunicação com a internet. Na arquitetura do protocolo P2P, não existe um servidor VPN central usado para comunicação com a internet pública. Em vez disso, todas as máquinas na rede atuam como cliente e servidor, cada uma se conecta e usa a outra para se comunicar com a internet pública, assim as máquinas na rede podem compartilhar recursos entre elas.
+
