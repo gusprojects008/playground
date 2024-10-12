@@ -39,7 +39,7 @@ def show_interfaces_addrs():
 def set_interface_mode(iface_options):
     if iface_options == 0:
        print()
-       interface_to_monitor = input(f"{colors.bright}Type it interface for set monitor mode: {colors.reset}")
+       interface_to_monitor = input(f"{colors.bright}Type it interface for set monitor mode: {colors.bright}{colors.blue}OBSERVATION: *Make Sure your managed interface is on the same channel as the monitor interface{colors.reset}: ")
        try:
           subprocess.run(['ip', 'link', 'set', interface_to_monitor, 'down'])
           subprocess.run(['iw', 'dev', interface_to_monitor, 'set', 'type', 'monitor'])
@@ -60,7 +60,7 @@ def set_interface_mode(iface_options):
     print()
     show_interfaces_addrs()
 
-def return_addresses(interface_network):
+def return_mac(interface_network):
     addresses_interface = psutil.net_if_addrs()
     if interface_network in addresses_interface:
        for info in addresses_interface.get(interface_network):
@@ -76,13 +76,8 @@ def mac_for_bytes(mac):
 def bytes_for_mac(mac):
     return ':'.join(format(byte, '02x') for byte in mac)
 
-def calc_rates(rates):
-    list_rates_transmition = []
-    for rate in rates:
-        # OPERATION: AND BIT BY BIT, (rate binary & value hexadecimal: 0x7f/01111111) * 500 
-        value_rate = (rate & 0x7f) * 500
-        list_rates_transmition.append(f"{value_rate} Mbps")
-    return list_rates_transmition
+def compress_data(packet):
+    return ''.join(format(byte, '02x') for byte in packet)
 
 def idenfify_interface_mode(interface):
     try:
@@ -93,71 +88,40 @@ def idenfify_interface_mode(interface):
            return False
     except Exception as error:
            print(f"Error ): it was not possible identify interface mode... {colors.red}{str(error)}, stderr: {information_iface.stderr}{colors.reset}")
-           
-# AGROUP ALL PACKETS INFO IN A CLASS packets_info
-class InfoPackets:
-      # THE FUNCTION __init__ IS INITIALIZED WHEN THE CLASS INITIALIZED, THEN THE FUNCTION RECEIVE INTERFACE VALUE
-      # AND self FOR REFENCE THE INSTANCE FROM CLASS AND YOUR VALUES
+
+def calc_rates(rates):
+    list_rates_transmition = []
+    for rate in rates:
+        # OPERATION: AND BIT BY BIT, (rate binary & value hexadecimal: 0x7f/01111111) * 500 
+        value_rate = (rate & 0x7f) * 500
+        list_rates_transmition.append(f"{value_rate} Mbps")
+    return list_rates_transmition
+
+class Info_Packets:
       def __init__(self, interface):
-          self.interface = interface
-          self.radiotap_header = struct.pack('!HHH', 0x00, 0x00, 0x0c)
-          self.mac_interface = return_addresses(interface)
-          self.mac_interface_byte = mac_for_bytes(self.mac_interface)
-          self.broadcast_addr = b'\xff\xff\xff\xff\xff\xff'
-          self.bssid = b'\xff\xff\xff\xff\xff\xff'
-          # THE FRAME CONTROL DATA GOES TO THE DESTINATION ADDRESS FIELD AND WILL ALSO WORK OR DESTINY ADDRESS FIELD COULD IT BE EMPTY
-          # THAT ALL THE APS(ACCESS POINTS) WILL UNDERSTAND YOU WANT TO GET NETWORK SSIDs NEARBY   
-          self.header_iee802 = struct.pack('!6s6sH', self.broadcast_addr, self.mac_interface_byte, 0x4000)
-          self.supported_rates = [0x82, 0x84, 0x8b, 0x96, 0x24, 0x30, 0x48, 0x6c]
-          self.bytes_rates = bytes(self.supported_rates)
-          self.rates = struct.pack('!BB', 0x01, 0x08) + self.bytes_rates
-          self.list_rates_transmission = calc_rates(self.supported_rates)
-          self.ssid_field = struct.pack('!BB', 0x00, 0x00) + b''
-          self.payload_test = struct.pack('!BBBB', 0x01, 0x02, 0x03, 0x04)
+          mac_interface = mac_for_bytes(return_mac(interface))
+          self.RadioTapHeader = struct.pack('!BBH', 0x00, 0x00, 0x0056)
+          #self.RadioInformation = struct.pack('!BB', 0x02, 0xd6)
+          self.FrameControl = struct.pack('!H', 0x0040)
+          self.MacHeader = struct.pack('!6s6s', b'\xff\xff\xff\xff\xff\xff', b'\xff\xff\xff\xff\xff\xff')
+          self.FrameControl_Extension = struct.pack('!H', 4000)
+          self.WirelessManagement = struct.pack('!BB', 0x00, 0x00)
+          self.rates = struct.pack('!BB', 0x01, 0x08) + b'\x02\x04\x0b\x16\x0c\x12\x18\x24'
 
-# USING STRUCT FOR UNPACK PACKETS AND YOUR DATA, IN CORRECT FORMAT!
-# IT IS NECESSARY TO KNOW WHAT TYPES OF DATA ARE COMING, THEIR ORDER AND POSITION, THEREFORE WE NEED COMMUNICATIONS PROTOCOLS WITH 
-# STANDARDS FOR SENDING THE DATA IN ORDER, SO THAT OTHER LOW LEVEL PORGRAMS LIKE THIS ARE ABLE TO PREDICT AND PROPERLY DEAL WITH THE 
-# DATA EXPECTED
-# HEADER ACCORDINGLY WITH TYPE PACKET
-
-# TYPES PACKET: 0X00/00000000 Association Request, 0x01/00000001 Association Reponse, 0x04/00000100 Probe Request, 0x05/00001001 
-# Probe Response,
-# 0x0a/00001010 Disassociation, 0x0b/00001011 Authentication, 0x0c/00001100 Deauthentication
-# DECODE SHOW PACKETS:
-
-# BIG ENDIAN BYTE ORDER, MEANS THAT MORE SIGNIFICANT BYTE COME FIRST, AND LITTLE ENDIAN ORDER IS WHEN THE BYTE
-# LESS SIGNIFICANT BYTE COME FIRST. THIS TWO BYTES ORDER IT HAPPENS BECOUSE THE DIFFERENTS ARCHITECTURES OF
-# PROCESSOR
-
-def compress_data(packet):
-    return ''.join(format(byte, '02x') for byte in packet)
-
-def show_compress_packet(packet):
-    return ' '.join(format(byte, '02x') for byte in packet)
-
-#def decode_packets(packet):
-    #data_compress = compress_data(packet)
- #   frame_control = data_compress[]  
+      def build_packet(self):
+          packet = (self.FrameControl + self.MacHeader)
+          return packet  
 
 def SendPackets(interface_network):
-    packets_info = InfoPackets(interface_network)
-    packet_deauthentication_probe = packets_info.header_iee802 + packets_info.ssid_field + packets_info.rates
+    packets_info = Info_Packets(interface_network)
+    packet_sent = packets_info.build_packet()
     try:
-       print(f"\n{colors.bright}INTERFACE IN OPERATION:{colors.reset} {colors.gb}{interface_network} => {packets_info.mac_interface} OR {packets_info.mac_interface_byte}{colors.reset}")
-       print(f"\n{colors.bright}SUPPORTED RATES(DEFAULT): {packets_info.list_rates_transmission} OR {packets_info.bytes_rates}{colors.reset}")
-       print(f"\n{colors.gb}PACKAGE SENT =>{colors.reset} {colors.red}{packet_deauthentication_probe}{colors.reset}\n")
-
        with socket.socket(socket.AF_PACKET, socket.SOCK_RAW, socket.htons(0x0003)) as sock:
             sock.bind((interface_network, 0))
-            sock.send(packet_deauthentication_probe)
-            #while True:
-                  #packet, address = sock.recvfrom(2048)
-                  #packet_found = packet
-                  #if packet_found:
-                     #print(packet_found)
+            sock.send(packet_sent)
+            print(f"\n{packet_sent.hex()}")
     except Exception as error:
-           print(f"A Error occur ); {colors.red}{str(error)}{colors.reset}\n")
+           print(f"A Error occur ); {colors.red}\n{error}{colors.reset}\n")
            sock.close()
 
 if __name__ == "__main__":

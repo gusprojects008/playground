@@ -76,7 +76,7 @@ def dissec_packet(packet):
 def intercept_packet():
     try:
        with socket.socket(socket.AF_PACKET, socket.SOCK_RAW, socket.htons(0x0003)) as sock:
-            sock.bind(('wlan0mon', 0))
+            sock.bind(('wlanMon', 0))
             while True:
                   packet, address = sock.recvfrom(4096)
                   packet_found = dissec_packet(packet)
