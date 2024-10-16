@@ -1,52 +1,55 @@
 import socket
 import struct
-import os
-
-class nlmsg_types:
-      # RTM Routing Table Management
-      RTM_NEWLINK = 0x10 # DEC: 16
-      RTM_DELLINK = 0x11 # DEC: 17
-      RTM_GETLINK = 0x12 # DEC: 18
-      RTM_SETLINK = 0x13 # DEC: 19
-      RTM_NEWADDR = 0x14 # DEC: 20
-
-      # NM Neighbour Management
-      RTM_NEWNEIGH = 0x1E # DEC: 30
-      RTM_DELNEIGH = 0x1F # DEC: 31
-      RTM_GETNEIGH = 0x20 # DEC: 32
-
-      # TC Traffic Control 
-      TC_NEWQDISC = 0x24 # DEC: 36
-      TC_DELQDISC = 0x25 # DEC: 37
-      TC_NEWFILTER = 0x26 # DEC: 38
-      TC_DELFILTER = 0x27 # DEC: 39
-     	
-      # GN Generic Netlink
-      NLMSG_NOOP = 0x01 # DEC: 1
-      NLMSG_ERROR = 0x02 # DEC: 2
-      NLMSG_DONE = 0x03 # DEC: 3
-      NLMSG_OVERRUN = 0x04 # DEC: 4
-
-class nlmsg_flags:
-      NLM_F_REQUEST = 0x01
-      NLM_F_ACK = 0x04
-      NLM_F_ROOT = 0x100
-      NLM_F_MATCH = 0x200
-      NLM_F_DUMP = NLM_F_ROOT | NLM_F_MATCH 
+import os 
       
 def unpack_kernel_response(nlmsg):
-    kernel_response = f"\nKernel Response: {nlmsg.hex()}"
+    kernel_response = f"Kernel Response: {nlmsg.hex()}"
     return kernel_response
 
-def scan_managed(interface):
-    nlmsghdr = struct.pack("IHHII", struct.calcsize("IHHII")) # NETLINK HEADER MESSAGE nlmsghdr(len(32bits), type(16bits), flags(16bits), seq(32bits), pid(32bits))
-    genlmsghdr = struct.pack() # GENERIC NETLINK HEADER genlmsghdr(cmd(8bits), version(8bits), reserved(16bits))
-    genlattr = struct.pack() # ATRIBUTES NETLINK nlattr(len(16bits), type(16bits))
-    try:
-       with socket.socket(socket.AF_NETLINK, socket.SOCK_RAW, NETLINK_GENERIC) as sock:
-            sock.bind((os.getpid(), 0))
-            #sock.send()
-            #sock.recv(65536)
-    except Exception as error:
-           print(f"Error {error}")	 	
+def build_nlmsg_scan(iface_index):
+    nlattr_family = b"nl80211".ljust(8, b"\x00")
+    nlattr = struct.pack("I", iface_index)
+    # 0x2d ATTR_SCAN_SSIDS, 0x45 NL80211_ATTR_TESTDATA, 0x9e NL80211_ATTR_SCAN_FLAGS
+    nl80211_attrs = struct.pack("HHI", struct.calcsize("HHI"), 0x2d, 0x04) + struct.pack("HHI", struct.calcsize("HHI"), 0x9e, 16384)
 
+    nlmsg_len = struct.calcsize("IHHII") + struct.calcsize("BBH") + struct.calcsize("HH") + len(nlattr) + len(nl80211_attrs)
+    
+    # nlmsg_type is NL80211 FAMILY ID 0X26
+    nlmsghdr = struct.pack("IHHII", nlmsg_len, 0x26, 0x01 | 0x04, 1, os.getpid()) # NETLINK DEFAULT HEADER MESSAGE nlmsghdr(len(32bits), type(16bits), flags(16bits), seq(32bits), pid(32bits))
+    genlmsghdr = struct.pack("BBH", 0x21, 0, 0) # OPERATION NETLINK, GENERIC NETLINK HEADER genlmsghdr(cmd(8bits), version(8bits), reserved(16bits))
+    genlattr = struct.pack("HH", struct.calcsize("HH") + len(nlattr), 0x3) + nlattr
+
+    nlmsg = nlmsghdr + genlmsghdr + genlattr + nl80211_attrs
+    return nlmsg
+
+def scan_managed():
+    try:
+       with socket.socket(socket.AF_NETLINK, socket.SOCK_RAW, 16) as sock:
+            #sock.setsockopt(socket.SOL_SOCKET, socket.SO_SNDBUF, 1000000)
+            #sock.setsockopt(socket.SOL_SOCKET, socket.SO_RCVBUF, 1000000)
+            #sock.setsockopt(socket.SOL_SOCKET, socket.SO_SNDBUF, 1000000)
+            #sock.setsockopt(socket.SOL_SOCKET, socket.SO_RCVBUF, 1000000)
+            #sock.setsockopt(270, 11, 100) # made a difference?
+            #sock_name = struct.pack("I", sock.getsockname()[0])
+
+            attr_family = b"nl80211".ljust(8, b"\x00")
+            nlmsg_len = struct.calcsize("IHHII") + struct.calcsize("BBH") + struct.calcsize("HH") + len(attr_family)
+            nlmsghdr = struct.pack("IHHII", nlmsg_len, 0x10, 0x01 | 0x04, 1, os.getpid()) # NETLINK DEFAULT HEADER MESSAGE nlmsghdr(len(32bits), type(16bits), flags(16bits), seq(32bits), pid(32bits))
+            genlmsghdr = struct.pack("BBH", 3, 1, 0) # OPERATION NETLINK, GENERIC NETLINK HEADER genlmsghdr(cmd(8bits), version(8bits), reserved(16bits))
+            genlattr = struct.pack("HH", struct.calcsize("HH") + len(attr_family), 2) + attr_family # ATRIBUTES NETLINK nlattr(len(16bits), type(16bits))
+            nlmsg = nlmsghdr + genlmsghdr + genlattr # NETLINK ROUTE SOCKET TO GET LINK INFORMATIOS INTERFACES HARDWARE
+
+            sock.bind((os.getpid(), 0))
+
+            nlmsg_trigger_scan = build_nlmsg_scan(4)
+            sock.send(nlmsg_trigger_scan)
+            print()
+
+            kernel_response = sock.recv(65536)
+            print(kernel_response)
+
+    except Exception as error:
+           print(f"Error {error}")
+           sock.close()
+
+scan_managed()

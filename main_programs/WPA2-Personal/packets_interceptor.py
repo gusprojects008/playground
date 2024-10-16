@@ -46,10 +46,10 @@ def dissec_packet(packet):
            length_ssid = error
            ssid = "None or Hidden"
     #if len(packet) < 250:
-     #  return f"Dissec Packet HEX:\nLength PacketHex: {len(packet_hex)}, Radiotap Length: {radiotap_length}, Frame Control: {frame_control}\nHex Data: {packet_hex}\nPacket UTF-8: {bytes.fromhex(packet_hex).decode('utf-8', errors='ignore')}\n" 
+     #  return f"Dissec Packet HEX:\nLength PacketHex: {len(packet_hex)}, Radiotap Length: {radiotap_length}, Frame Control: {frame_control}\n" Hex Data: {packet_hex}\nPacket UTF-8: {bytes.fromhex(packet_hex).decode('utf-8', errors='ignore')}\n" 
 
-    if len(packet) > 250 and len(packet) < 500 and radiotap_length == 56 and (frame_control == '8000' or frame_control == '5000'): 
-       return f"Dissec Packet HEX:\nLength Packet bytes: {len(packet)}\nRadiotap Length bytes: {radiotap_length}\nFrame Control: {frame_control}\nLength ssid: {length_ssid}\nSSID: {ssid} {bytes.fromhex(ssid).decode('utf-8', errors='ignore')}\nHex Data: {packet_hex}\nPacket UTF-8: {bytes.fromhex(packet_hex).decode('utf-8', errors='ignore')}\n"
+    if len(packet) > 230 and len(packet) < 500 and (radiotap_length == 56 or radiotap_length == 54) and (frame_control == '8000' or frame_control == '5000'): 
+       return f"Dissec Packet HEX:\nLength Packet bytes: {len(packet)}\nRadiotap Length bytes: {radiotap_length}\nFrame Control: {frame_control}\nLength ssid: {length_ssid}\nSSID: {ssid} {bytes.fromhex(ssid).decode('utf-8', errors='ignore')}\n" #Hex Data: {packet_hex}\nPacket UTF-8: {bytes.fromhex(packet_hex).decode('utf-8', errors='ignore')}\n"
      
 #    if frame_control == '8000':
 #       packet_beacon = {
@@ -76,7 +76,7 @@ def dissec_packet(packet):
 def intercept_packet():
     try:
        with socket.socket(socket.AF_PACKET, socket.SOCK_RAW, socket.htons(0x0003)) as sock:
-            sock.bind(('wlanMon', 0))
+            sock.bind(('wlan0mon', 0))
             while True:
                   packet, address = sock.recvfrom(4096)
                   packet_found = dissec_packet(packet)
