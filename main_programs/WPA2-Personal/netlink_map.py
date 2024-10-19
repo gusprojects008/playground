@@ -13,11 +13,12 @@ def netlink_values_classes_parser(netlink_file):
 
         if clean_line in netlink_dictionary: # Verify if line already exist
            continue # Skip the iteration index and continue the "for" loop if clean_line already exist
+
         netlink_dictionary[clean_line] = index
 
         if '=' in clean_line:
            try:
-              key_split = clean_line.split('=')
+              key_split = clean_line.strip().split('=')
               key_value = eval(key_split[1].strip(), {}, netlink_dictionary) # evaluate the second value of the key, and solve/interpret it as python code, and if it is an already existing key or variable he solve/interpret by accessing 
               netlink_dictionary.update({key_split[0]: key_value})
            except SyntaxError:
@@ -28,6 +29,7 @@ def netlink_values_classes_parser(netlink_file):
                          continue
         else:  
             index += 1
+
     return {key: hex(index) for key, index in netlink_dictionary.items()} # for "key:" the hex() function go iterate over index(iterable) in nl80211_dict.items()
 
 def netlink_file_handler(netlink_file):
