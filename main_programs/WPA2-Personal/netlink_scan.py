@@ -1,11 +1,14 @@
 import socket
 import struct
 import os 
-      
+
 def unpack_kernel_response(nlmsg):
     kernel_response = f"Kernel Response: {nlmsg.hex()}"
     return kernel_response
 
+def nlmsg_():
+    nlmsg = struct.pack("IHHII", )
+    genlhdr = struct.pack("")
 def build_nlmsg_scan(iface_index):
     nlattr_family = b"nl80211".ljust(8, b"\x00")
     nlattr = struct.pack("I", iface_index)
@@ -25,12 +28,6 @@ def build_nlmsg_scan(iface_index):
 def scan_managed():
     try:
        with socket.socket(socket.AF_NETLINK, socket.SOCK_RAW, 16) as sock:
-            #sock.setsockopt(socket.SOL_SOCKET, socket.SO_SNDBUF, 1000000)
-            #sock.setsockopt(socket.SOL_SOCKET, socket.SO_RCVBUF, 1000000)
-            #sock.setsockopt(socket.SOL_SOCKET, socket.SO_SNDBUF, 1000000)
-            #sock.setsockopt(socket.SOL_SOCKET, socket.SO_RCVBUF, 1000000)
-            #sock.setsockopt(270, 11, 100) # made a difference?
-            #sock_name = struct.pack("I", sock.getsockname()[0])
 
             attr_family = b"nl80211".ljust(8, b"\x00")
             nlmsg_len = struct.calcsize("IHHII") + struct.calcsize("BBH") + struct.calcsize("HH") + len(attr_family)
