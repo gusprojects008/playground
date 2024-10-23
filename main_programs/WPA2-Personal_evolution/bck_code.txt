@@ -1,0 +1,6 @@
+ if nla_type == 2:  # CTRL_ATTR_FAMILY_NAME
+            family_name = attr_value.decode('utf-8').strip('\x00')
+            nlmsg_response["CTRL_ATTR_FAMILY_NAME"] = family_name
+        elif nla_type == 1:  # CTRL_ATTR_FAMILY_ID
+            family_id = struct.unpack("I", attr_value)[0]
+            nlmsg_response["CTRL_ATTR_FAMILY_ID"] = family_id
