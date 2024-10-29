@@ -1,0 +1,20 @@
+Electromagnetism is a phenomenon/force of nature that occurs when there is an interaction between electrically charged particles with positive (protons) and negative (electrons) charges. This phenomenon causes an electric field to be created around the charged particles when they are at rest, and an electric and magnetic field is created when they are in motion.
+
+But to understand better, it is necessary to abstract and separate the main concepts:
+
+Atom: protons, electrons and neutrons are particles of the atom, an atom is the fundamental particle of matter, the atom is composed of:
+nucleus (where the protons and neutrons are), neutrons (neutrons are particles with a neutral electric charge) and around the nucleus there is the electrosphere (it is the region of the atom that contains the electrons).
+
+Electric field: An electric field is formed when there is an interaction between positive and negative electric charges, even when at rest or in motion.
+
+Magnetic field: A magnetic field is always formed when there is movement between electrical charges, such as in a copper wire that carries energy.
+
+Therefore, when electrical charges are in motion, an electromagnetic field is formed, so every wire that carries electrical energy forms an electromagnetic field due to the movement of the electrical charges.
+
+It is necessary to know the types of electrical currents:
+AC (Alternating Current): This is a type of electrical current in which the movement and polarity of the electrical charges vary periodically. These oscillations in the electrical charges generate electrical and magnetic fields that propagate in electromagnetic waves.
+DC (Direct Current): This is a type of electrical current in which the voltage and movement of the electrical charges are continuous and do not undergo significant oscillations. Therefore, it does not emit electromagnetic waves due to the continuous movement of the electrical current in one direction.
+
+So we come to the conclusion that the greater the variation in movement, polarity of electrical charges (AC current) and the greater the electrical voltage, the more waves propagate at a greater intensity.
+
+With this, it is possible to understand the basic functioning of wireless communication technologies.

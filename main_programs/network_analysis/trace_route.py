@@ -72,9 +72,10 @@ def traceroute_func():
     else:
         print(f"{flags.error}{colors.bb} NOT RESPONSE );{colors.reset}")
 
-
     # INIT TRACEROUTE
     # SENDING PACKETS UDP AND ICMP JUST
+    print()
+    location_ip(target_ip)
     print(f"\n{flags.ok}{colors.blue} sending packets ICMP and UDP... trace route:{colors.reset}\n")
     print(f"{colors.gb}RESPONSE:{colors.reset}\n")
     packets_sent_recv, ananswered = traceroute(target=target_ip, dport=des_port, maxttl=ttl_user)

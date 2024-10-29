@@ -18,7 +18,6 @@ import random
 import socket
 import os
 import sys
-import struct
 
 # FUNCTIONALITIES ADDITIONAL: dhcp scan(checked), privacy mode(), auto config(), ipv6 optional(), verifcation for see've internet it's working
 # VERIFY IF CONFIGURATION AUTO ALREADY EXIST 
@@ -55,42 +54,70 @@ class flags:
 def typewriter(text):
     for char in text:
         print(char, end='', flush=True) 
-        speed = 0.01
+        speed = 0.02
         time.sleep(speed)
 
-# GETTING ADAPTER OF NETWORK AUTOMATICALLY
-def get_interfaces():
-    try:
-       interfaces_user = subprocess.run(['ip', 'link', 'show'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True)
-       interfaces_user_output = re.findall(r'^\d+: ([^:]+):', interfaces_user.stdout.decode().strip(), re.MULTILINE)
-       return interfaces_user_output
-    except Exception as error:
-           return f"Error get interfaces ); {str(error)}"
+# INSTALLATION OF THE PACKETS NECESSARYS:
+def install(path):
+    # FLAG FOR USER KNOW WHAT SHOULD ARE EXECUTING
+    text_alert = f"{flags.ok}{colors.blue} INSTALLING IWD AND LIBRARIES NEEDED ...{colors.reset}\n"
+    typewriter(text_alert)
 
-# GETTING ADDRESSES: MAC FROM ADAPTER INTERAFACE FOUND...
+    # INSTALLING IWD AND LIBRARIES NEEDED FOR EXECUTION OF THE PROGRAM AND DIRECTING OUTPUT OF THE COMMANDS FOR FILES
+    with open(path, 'w') as file_log:
+         try:
+            install_iwd = subprocess.run(['pacman', '-Syu', '--noconfirm', 'iwd'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, check=True)
+            install_libraries = subprocess.run(['pip', 'install', 'netifaces', 'scapy', 'ipaddress', 'wifi'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, check=True)
+            file_log.write(f"Output of the result of the command of installation of the IWD: {install_iwd.stdout.decode('utf-8')} \nResult of the operation of instalation of the libraries needed!!! {install_libraries.stdout.decode('utf-8')} \n")
+         except Exception as error:
+                print(f'{flags.error}{colors.blue} POSSIBLE ERROR: {colors.sb}NETWORK{colors.reset}\n')
+                file_log.write(f"\n Error => {str(error)}")
+         finally:
+                text_finally = f"\n{flags.finalization}{colors.blue} see've results of installation in {colors.sb}{path}{colors.reset}\n\n"
+                typewriter(text_finally)
+
+# GETTING ADAPTER OF NETWORK AUTOMATICALLY
+def get_interface():
+    import netifaces
+    interfaces_user = netifaces.interfaces()
+    interface_find = [interface for interface in interfaces_user if 'wlan0' in interface or 'wlp' in interface or 'wlan' in interface or 'wlan1' in interface]
+    return interface_find[0]
+
+# GETTING ADDRESSES: MAC, MAC_BROADCAST OF THE ADAPTER INTERAFACE FOUND...
 # THE INTERFACE COULD IT BE, THE INTERFACE ASSIGNMENT AUTOMATICALLY OR THE INTERFACE MANUALLY 
-def get_address(interface):
-    interfaces = get_interfaces()
-    if interface in interfaces:
-       try:
-          interface_info = subprocess.run(["ip", "link", "show", interface], stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True)
-          interface_info_output = re.findall('link/ether ([0-9a-fA-F:]){17}', interface_info.stdout.decode().strip())
-          return interface_info_output
-       except Exception as error:
-              return f"Error get interface address {interface} ); {str(error)}"
-    else:
-        return f"Error {interface} Not Found );"
+def get_addresses(interface):
+    import netifaces
+    address_interface = netifaces.ifaddresses(interface)
+    if netifaces.AF_LINK in address_interface:
+       return address_interface[netifaces.AF_LINK][0]
 
 # SHOW NETWORKS CLOSE AVAILABLE
 def show_networks(interface):
-    with socket.socket(socket.AF_PACKET, socket.SOCK_RAW, struct.pack("!H", 0x0003)) as sock:
-         sock.bind
+    import netifaces
+    interfaces_availables = netifaces.interfaces()
+    try: 
+       if interface in interfaces_availables:
+          text_alert = f"\n{flags.ok}{colors.gb} NETWORKS AVAILABLES: SSID: {colors.sublime}<NETWORK AVAILABLE>\n{colors.reset}"
+          typewriter(text_alert)
+          print('\n')
+          scan_networks = subprocess.Popen(['iw', interface, 'scan'], stdout=subprocess.PIPE)
+          grep_ssid = subprocess.run(['grep', 'SSID:'], stdin=scan_networks.stdout)
+          return True
+       else:
+           print(f'\n{flags.error}{colors.bb} ERROR: TYPE IT INTERFACE AVAILABLE...{colors.reset}\n')
+           return False
+
+    except Exception as error:
+           message_error = f"\n{flags.error}{colors.bb}DONT'T POSSIBLE SHOW NETWORKS AVAILABLE ...{colors.reset} {str(error)}\n"
+           print(message_error)
+           return False
 
 # SHOW INTERFACES OF ADAPTERS LOCALS
 def interfaces_local():
+    import netifaces
     text_alert = f"{colors.blue}INTERFACES WIRELESS USUALLY START WITH {colors.cyan}{colors.bright}WLAN{colors.blue} ...{colors.reset}\n"
     typewriter(text_alert)
-    interfaces_local = get_interface()
+    interfaces_local = netifaces.interfaces()
     for interface in interfaces_local:
         interfaces_found = f"{colors.bb}INTERFACE FOUND =» {colors.cyan}{interface}{colors.reset} \n"
         typewriter(interfaces_found)
@@ -100,6 +127,7 @@ def interfaces_local():
 def internet_test(interface):
     from scapy.layers.inet import IP, ICMP
     from scapy.sendrecv import sr1
+
     icmp_packet = IP(dst='1.1.1.1')  / ICMP()
 
     try:
@@ -147,7 +175,31 @@ def handle_packets(packet):
            print(f'\n{flags.error}{colors.bb} Error: TO GET INFORMATION OR SETUP NETWORK => {str(error)}{colors.reset}\n')
 
 def operation_auto(interface):
-    
+    from scapy.layers.l2 import Ether
+    from scapy.layers.inet import IP, UDP
+    from scapy.layers.dhcp import DHCP, BOOTP, RandInt
+    from scapy.layers.dot11 import sniff
+    from scapy.sendrecv import sendp
+
+    addresses = get_addresses(interface)
+    mac_address = addresses.get('addr')
+    mac_broadcast = addresses.get('broadcast')
+
+    # TYPE OF THE REQUISITION DHCP FOR GATEWAY SERVER
+    dhcp_options = [('message-type', 'discover'), ('requested_addr', '192.168.0.100'), 
+                   ('subnet_mask', '0.0.0.0'), 'end', ('pad', b'\x00')]
+    dhcp_discover_packet = Ether(dst=mac_broadcast, src=mac_address) / IP(src="0.0.0.0", dst="255.255.255.255") / \
+                           UDP(sport=68, dport=67) / BOOTP(op=1, chaddr=mac_address, xid=RandInt(), flags=0x8000) / \
+                           DHCP(options=dhcp_options)
+
+    # SENDP, SEND 1 PACKET AND DON'T WAIT RESPONSE
+    print('\n')
+    sendp(dhcp_discover_packet, iface=interface)
+
+    # HUNT RESPONSE OF THE GATEWAY FOR 10 SECONDS, RESPONSE EXCEPTED: DHCP OFFER AND PERFORMS AN OPERATION ON
+    # FOR EACH PACKET CAPTURED
+    print(f'\n{flags.ok}{colors.gb} CAPTURE RESPONSE ROUTER ...{colors.reset}\n')
+    sniff(filter='udp and (port 67 or port 68)', iface=interface, timeout=10, store=True, prn=handle_packets)
 
 def validate_ipv4_ipv6(ip):
     import ipaddress
