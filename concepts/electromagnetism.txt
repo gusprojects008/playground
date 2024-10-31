@@ -1,41 +1,38 @@
-Electromagnetism is a phenomenon/force of nature that occurs when there is interaction between electrically charged particles with positive (protons) and negative (electrons) charges. This phenomenon causes an electric field to be created around the charged particles when they are at rest, and an electric and magnetic field is created when they are in motion.
+Electromagnetism is a phenomenon/force of nature that occurs when there is interaction between electrically charged particles with positive charges (protons) and negative charges (electrons). This phenomenon causes an electric field to be created around the charged particles when they are at rest, and an electric and magnetic field is created when they are in motion, thus generating electromagnetic waves that are emitted into space without the need for a specific medium.
 
-But to understand it better, it is necessary to abstract and separate the main concepts:
+Electromagnetic waves are the purest form of energy that propagates through space, as they are the oscillations of the electric and magnetic fields in the wave that propagates at the speed of light.
+
+But to understand better, it is necessary to abstract and separate the main concepts:
 
 Atom: protons, electrons and neutrons are particles of the atom, an atom is the fundamental particle of matter, the atom is composed of:
 nucleus (where the protons and neutrons are), neutrons (neutrons are particles with a neutral electric charge) and around the nucleus there is the electrosphere (it is the region of the atom that contains the electrons).
 
 Electric field: An electric field is formed when there is interaction between positive and negative electric charges, even when at rest or in motion.
 
-Magnetic field: A magnetic field is always formed when there is movement between electrical charges, such as in a copper wire that carries energy.
+Magnetic field: A magnetic field is always formed when there is movement between electric charges, as in a copper wire that carries energy.
 
-Therefore, when electrical charges are in motion, an electromagnetic field is formed, so every wire that carries electrical energy forms an electromagnetic field due to the movement of electrical charges.
+Therefore, when electric charges are in motion, an electromagnetic field is formed, so every wire that carries electrical energy forms an electromagnetic field due to the movement of electric charges.
 
-It is necessary to know the types of electrical currents:
-AC (Alternating Current): This is a type of electrical current in which the movement and polarity of electrical charges vary periodically. These oscillations in electrical charges generate electrical and magnetic fields that propagate as electromagnetic waves.
+It is necessary to know the types of electric currents:
+AC (Alternating Current): This is a type of electric current in which the movement and polarity of electric charges vary periodically. These oscillations in electric charges generate electric and magnetic fields that propagate as electromagnetic waves.
 
-DC (Direct Current): This is a type of electrical current in which the voltage and movement of electrical charges are continuous and do not undergo significant oscillations. Therefore, it does not emit electromagnetic waves due to the continuous movement of the electrical current in one direction.
+DC (Direct Current): This is a type of electric current in which the voltage and movement of electric charges are continuous and do not undergo significant oscillations. Therefore, it does not emit electromagnetic waves due to the continuous movement of the electric current in one direction.
 
-So we come to the conclusion that the greater the oscillation or variation in the movement and polarity of electrical charges in an alternating current, the higher the frequency at which electromagnetic waves propagate and the intensity will depend on factors such as environment, antennas, voltage of the energy received and transmission power.
+So we come to the conclusion that the greater the oscillation or variation in the movement and polarity of electric charges in an alternating current, the higher the frequency at which electromagnetic waves propagate and the intensity will depend on factors such as environment, antennas, voltage of the energy received and transmission power.
 
-So to generate electromagnetic waves at a specific frequency, electronic circuits are needed to manipulate the movement of electrical charges through components such as: oscillators, modulators, etc. and then generate electromagnetic waves at a specific frequency, that is, convert the electrical energy received into electromagnetic waves that can be transmitted via antennas.
-
-The frequency of an electromagnetic wave is measured in hertz (Hz), that is, a wave with a frequency of 1 Hz makes one cycle per second (oscillates once per second), so a 2 GHz wave will oscillate 2 billion times in one second and a 5 GHz wave will oscillate 5 billion times in one second. So the more oscillations (cycles) a wave makes per second, the shorter it will be, due to the large number of oscillations it needs to make while propagating at the constant speed of light (300,000 km/s), thus making each oscillation of the wave have a shorter length between them, to propagate the frequencies within the speed of light.
+The frequency of an electromagnetic wave is measured in hertz (Hz), that is, a wave with a frequency of 1 Hz makes one cycle per second (oscillates once per second), so a 2 GHz wave will oscillate 2 billion times in one second and a 5 GHz wave will oscillate 5 billion times in one second. So, the more oscillations (cycles) a wave makes per second, the shorter it will be, due to the large number of oscillations it needs to make within the constant speed of light (300,000 km/s), causing each oscillation of the wave to have a shorter length between them, to propagate the frequencies within the speed of light.
 
 So, the wavelength is inversely proportional to the frequency of the wave, because the more oscillations and variations the waves make per second in each cycle, the shorter the wavelength will be, and the fewer oscillations of the electromagnetic wave per cycle per second, the greater its length will be.
 
-Differences between 2 GHz and 5 GHz electromagnetic wave frequencies:
+Differences between the frequencies of 2 GHz and 5 GHz electromagnetic waves:
 
 2 GHz waves perform 2 billion oscillation cycles and variations in electrical charges per second. This means that each cycle can send a specific number of bits, according to the wave modulation circuit used by the communication device, for example, a Wi-Fi router.
 2 GHz electromagnetic waves pass through obstacles more easily due to their length, and thus have a greater range, but they tend to suffer more interference due to the length of the waves, making them easier to be absorbed by objects, especially metallic objects and good conductors such as copper, silver, gold, among other objects with low resistance.
 
-5 GHz electromagnetic waves have a higher data transmission capacity, in part due to the amount of spectrum available in this frequency range, which reduces interference with other devices compared to lower frequencies such as 2.4 GHz. Since 5 GHz waves perform 5 billion oscillations per second, they have a shorter wavelength than lower frequency waves, due to the greater number of cycles they perform in each second.
+5 GHz electromagnetic waves have a higher data transmission capacity, in part due to the amount of spectrum available in this frequency range, which reduces interference with other devices compared to lower frequencies such as 2.4 GHz. Since 5 GHz waves perform 5 billion oscillations per second, they have a shorter wavelength than lower frequency waves, due to the greater number of cycles it must perform quickly due to the speed of light at which the waves propagate.
 
-It is important to remember that the wavelength at higher frequencies is shorter because the speed of light is constant in a vacuum. This is true for all electromagnetic waves (such as radio, microwaves, infrared, visible light, ultraviolet, X-rays, and gamma rays), which propagate in a vacuum at a speed of approximately 300,000 km/s. Thus, high-frequency waves have shorter wavelengths because they oscillate more quickly, but propagate at the same speed, resulting in shorter cycles to accommodate the high frequency.
-
-In an electromagnetic wave, the number of oscillation cycles is not manipulated to fit the speed of light, the waves already have a constant speed, the higher frequency waves are smaller only due to the number of cycles it makes per second, resulting in a shorter wavelength, and when a lower frequency wave is emitted, its length is greater due to the low oscillation it has per second during its emission, which is constant, due to its propagation speed in a vacuum.
+So, to generate electromagnetic waves at a specific frequency, electronic circuits are needed to manipulate the movement of electrical charges through components such as oscillators, modulators, etc. and then generate electromagnetic waves at a specific frequency, that is, converting the received electrical energy into electromagnetic waves that can be transmitted by antennas.
 
 Example of an electromagnetic wave: https://www.manutencaoesuprimentos.com.br/teoria-das-ondas-eletromagneticas/
 https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.tecforest.com.br%2F24-ghz-ou-5-ghz-entenda-a-diferenca%2F&psig=AOvVaw3JhH3K52NXyKaKaXv4NzsJ&ust=1730329498335000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCMCmm-rZtIkDFQAAAAAdAAAAABAR
 
-With this, it is possible to understand the basic functioning of wireless communication technologies.
