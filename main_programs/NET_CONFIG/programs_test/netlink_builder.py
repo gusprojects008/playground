@@ -24,7 +24,7 @@ def nlmsg_builder(nlcmd, nlattr, type, flags, seq):
            print(f"Error {error}")
            return None
 
-def parse_kernel_response(nlmsg_kernel):
+def parser_kernel_response(nlmsg_kernel):
     nlmsghdr = struct.unpack("IHHII", nlmsg_kernel[:struct.calcsize("IHHII")])
     nlmsghdr_len = struct.calcsize("IHHII")
 
@@ -61,23 +61,9 @@ def parse_kernel_response(nlmsg_kernel):
           else:
               pass 
 
-          # Is need to cancel the first 2 bits, because: *multiples of 4 always have the first 2 bits nulled, that is: 00!
-          # exemple: (0(00000000), 4(00000100), 8(00001000), 12(00001100), 16(00010000), etc...)  
-          offset += (nla_len + 3) & (~ 3) # the "offset" receives the nla_len while is smaller that len(nlattrs_bytes) like this going to the next one nlattr and the "while" loop processing again nlattr!
-                                          # why "(nla_len + 3) & (~ 3)"?  This is so that nla_len is rounded to a multiple of 4! just because the lengths of nlmsg and others byte packets in computer, are generally multiples of 4 for various reasons, so must be follow standard to interpret the messages!
-                                          # first (nla_len + 3) This is used if nla_len is not a multiple of 4 or a odd number, and if nla_len is a multiple of 4 the value will not change, because:
-                                          # rule 0: if a number odd is somed (+ 3) the result is a even number, and if even number is somed (+ 3) the result is a odd number! 
-                                          # bitwise operations: "& AND" operation sets each bit to 1 if both bits are 1, "~ NOT" operation inverts all the bits!
-                                          # so 3(00000011) when (~ 3) go (11111100) causing (cancel or reset) the first 2 bits (2, 1) thus returning only multiples of 4!
-                                          # exemple: (nla_len(7) + 3) & (~ 3) # 10 is even number but is not a multiple of 4!
-                                          # ((nla_len(10) + 3) == 10(00001010)) & ((~ 3) == - 4(11111100))
-                                          # 00001010
-                                          #    &
-                                          # 11111100
-                                          # 00001000(8)
-                                          # so (00001010(10)) & 11111100(~3) only filters by multiples of 4, because all multiples of 4 have the first 2 bits as 0, because numbers that are not multiples of 4 or odd use the first 2 bits to form themselves, so when we reset them we only take the bits that are multiples of 4 from the original value that come after the first 2 bits, thus rounding to a multiple of 4 smaller than the original value, that is, the multiple of 4 before the current number, example: the current number 10 (00001010), the multiple of 4 before it: 8 (00001000)!
-                                          # so the big secret is to do an "AND" operation between the current number (nla_len + 3 (so that the first 2 bits are added (and if the number is already a multiple of 4 the value 3 added will be canceled and will return the same number multiple of 4 at the beginning, and if it is not a multiple of 4 the value 3 will also be canceled and will then return only the bits multiple of 4 of the initial value)) and the "AND &" operation is done with the same number 00000011 (3) but the result of the "NOT" operation being: 11111100 (~ 3), (3 & ~ 3 = 0) meaning that if the first 2 bits are (0 and 1) they will return zero and will not be counted in the byte, thus always canceling the first 2 bits, thus always returning multiples of 4. 
-                                          # the nla_len message must be a multiple of 4 to be correctly aligned in the memory addresses which are generally 32 bits or 64 depending on the processor architecture, using multiples of 4 to define the size of each message makes the processing of message information more standardized, efficient and easy to interpret and then move on to the next message, so the processor divides each message information according to the protocol and structure of the specific message.  
+          # offset receives just nla_len mutiple of 4
+          offset += (nla_len + 3) & (~ 3)  
+
     return nlmsg_response
     
 def nl80211_get_family():
@@ -91,12 +77,15 @@ def nl80211_get_family():
          sock.send(nlmsg_generic)
 
          kernel_response = sock.recv(65536)
-         family_id = parse_kernel_response(kernel_response)["nlattrs"]["CTRL_ATTR_FAMILY_ID"][2].strip(b"\x00").hex()
-    return family_id 
+         family_id = parser_kernel_response(kernel_response)["nlattrs"]["CTRL_ATTR_FAMILY_ID"][2].strip(b"\x00").hex()
+    return family_id
 
-#def nl80211_get_scan():
- #   genlmsghdr = struct.pack("BBH", 0x20, 0, 0)
-  #  nl80211_attr_
+def nl80211_get_scan(nl80211_familyID, iface):
+    genlmsghdr = struct.pack("BBH", 0x20, 0, 0)
+    nlattr = struct.pack("HH", struct.calcsize("HH") + len(iface), 0x03) + iface
+    nlmsg = nlmsg_builder(genlmsghdr, nlattr, nl80211_familyID, 1 | 4 | (0x100 | 0x200), 1)
+
+    return nlmsg
 
 def random_mac():
     mac = [random.randint(0x00, 0xFF) for _ in range(6)]
@@ -106,27 +95,31 @@ def nl80211_trigger_scan(iface):
     # get family nl80211
     nl80211_family = int(nl80211_get_family(), 16)
 
-    #iface = struct.pack("H", iface)
-
     # genlmsg trigger scan, in a message of type nl80211 through of a netlink generic, the cmd and attr of message must of type nl80211
     genlmsghdr = struct.pack("BBH", 0x21, 0, 0)
     nl80211_nlattr_iface = struct.pack("HH", struct.calcsize("HH") + len(iface), 3) + iface
+
     # if want "probe response", put value 4 for ssid scan
     nl80211_nlattr_max_ssids = struct.pack("HHI", struct.calcsize("HHI"), 0x2d, 0)
-    nl80211_nlattr_flags = struct.pack("HHIIIIII", struct.calcsize("HHIIIIII"), 0x9e, 1<<1, 1<<3, 1<<5, 1<<6, 1<<10, 1<<11)
+
+    # ALSO IS POSSIBLE USE THE "OR" OPERATOR FOR EACH FLAG, EX: (1 << 1) | (1 << 2). FOR SO SEND THE TOTAL VALUE OF ALL FLAGS!
+    nl80211_nlattr_flags = struct.pack("HHI", struct.calcsize("HHI"), 0x9e, 1 << 1)
 
     nl80211_nlattrs = [nl80211_nlattr_iface, nl80211_nlattr_max_ssids, nl80211_nlattr_flags]
 
     nlmsg_scan = nlmsg_builder(genlmsghdr, nl80211_nlattrs, nl80211_family, 1, 1)
+    nlmsg_get_scan = nl80211_get_scan(nl80211_family, iface)
 
     with socket.socket(socket.AF_NETLINK, socket.SOCK_RAW, 16) as sock:
+#         sock.setsockopt(270, 1, 1)
          sock.bind((os.getpid(), 0))
-         #print(iface)
          sock.send(nlmsg_scan)
          time.sleep(10)
+         sock.send(nlmsg_get_scan)
+         kernel_response = parser_kernel_response(sock.recv(65536))
+         print(sock.recv(65536)) #, kernel_response)
          
-         print(sock.recv(65536))
-
 interface_index = struct.pack("I", int(input("Type it interface index: ").strip()))
 
 nl80211_trigger_scan(interface_index)
+#print(nl80211_get_family())
