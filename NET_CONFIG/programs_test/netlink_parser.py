@@ -76,6 +76,46 @@ def signal_analyser(signal_mbm, frequency, tx_router):
 
     return quality #, distance
 
+def GCS_OUI_identify(GCS):
+    GCS_OUI = mac_converter(GCS)
+    GCS_OUI_dict = {
+        '00:0f:ac:01': 'WEP-40',
+        '00:0f:ac:02': 'TKIP',
+        '00:0f:ac:04': 'AES_CCMP',
+        '00:0f:ac:05': 'WEP-104',
+        '00:0f:ac:06': 'BIP',
+        '00:0f:ac:07': 'GCMP-128',
+        '00:0f:ac:08': 'GCMP-256',
+        '00:0f:ac:09': 'CCMP-256',
+        '00:0f:ac:0a': 'BIP-GMAC-128',
+        '00:0f:ac:0b': 'BIP-GMAC-256',
+        '00:50:f2:01': 'Microsoft WEP',
+        '00:50:f2:02': 'Microsoft TKIP',
+        '00:50:f2:04': 'Microsoft AES-CCMP',
+        '00:50:f2:05': 'Microsoft WPA proprietary',
+        '00:90:4c:00': 'Broadcom proprietary',
+        '00:e0:2f:00': 'Cisco',
+        '00:14:a4:00': 'Atheros', 
+    }
+    return f"{GCS_OUI_dict.get(GCS_OUI, 'Unknown Type')} {GCS_OUI}" 
+
+def AKM_OUI_identify(AKM):
+    AKM_OUI = mac_converter(AKM)
+    AKM_OUI_dict = {
+        '00:0f:ac:01': 'WPA/RSN-PSK',
+        '00:0f:ac:02': 'WPA/RSN-EAP',
+        '00:0f:ac:03': 'FT-PSK',
+        '00:0f:ac:04': 'FT-EAP',
+        '00:0f:ac:05': 'WPA/RSN-SHA256-PSK',
+        '00:0f:ac:06': 'WPA/RSN-SHA256-EAP',
+        '00:0f:ac:07': 'SAE-WAP3',
+        '00:0f:ac:08': 'FT-SAE',
+        '00:0f:ac:09': 'AP',
+        '00:0f:ac:0a': '802.1X',
+        '00:0f:ac:0b': '802.1X-192' 
+    }
+    return f"{AKM_OUI_dict.get(AKM_OUI, 'Unknown Type')} {AKM_OUI}"
+    
 #def parser_rsn(rsn): # parser RSN security informations from AP
 #def parser_vendor_especific(vendor_especific): # parser informations about AP and Router
 
@@ -124,21 +164,21 @@ def show_ap_info():
                                       if ie[0] == 48: # WLAN_EID_RSN eid attribute # version, Group Data Cipher Suite, Pairwise Cipher Suit Count, Pairwise Cipher Suit List
                                          rsn_info = {}
                                          offset = 0
-                                         version, GCS, PCSC = struct.unpack_from('<H4sH', ie[2], offset)
-                                         rsn_info['Group Cipher Suite(multicast)'] = mac_converter(GCS)
+                                         version, GCS, PCSC = struct.unpack_from('<H4sH', ie[2], offset) 
+                                         rsn_info['Group Cipher Suite(multicast/broadcast)'] = GCS_OUI_identify(GCS)
                                          offset += struct.calcsize("HIH")
                                          rsn_info['Pairwise Cipher Suites(unicast)'] = []
                                          for _ in range(PCSC):
                                              cipher_suite = struct.unpack_from("4s", ie[2], offset - struct.calcsize('H'))[0]
-                                             rsn_info['Pairwise Cipher Suites(unicast)'].append(mac_converter(cipher_suite))
-                                             offset += struct.calcsize("I") 
+                                             rsn_info['Pairwise Cipher Suites(unicast)'].append(GCS_OUI_identify(cipher_suite))
+                                             offset += struct.calcsize("I")
                                          offset -= struct.calcsize("H") # because of the for loop the offset is misaligned
                                          AKM_count = struct.unpack_from("H", ie[2], offset)[0]
                                          offset += struct.calcsize("H")
                                          rsn_info['AKM List'] = []                                      
                                          for _ in range(AKM_count):
                                              AKM = struct.unpack_from("4s", ie[2], offset)[0]
-                                             rsn_info['AKM List'].append(mac_converter(AKM))
+                                             rsn_info['AKM List'].append(AKM_OUI_identify(AKM))
                                              offset += struct.calcsize("I")
                                          AP_INFO['RSN'] = rsn_info
                                       if ie[0] == 195: # WLAN_EID_TX_POWER_ENVELOPE eid attribute
