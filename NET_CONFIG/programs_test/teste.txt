@@ -1,1 +1,35 @@
 0100000fac020200000fac02000fac040100000fac020000
+
+
+        Tag: Vendor Specific: Microsoft Corp.: WPS
+            Tag Number: Vendor Specific (221)
+            Tag length: 49
+            OUI: 00:50:f2 (Microsoft Corp.)
+            Vendor Specific OUI Type: 4
+            Type: WPS (0x04)
+            Version: 0x10
+                Data Element Type: Version (0x104a)
+                Data Element Length: 1
+                Version: 0x10
+            Wifi Protected Setup State: Configured (0x02)
+                Data Element Type: Wifi Protected Setup State (0x1044)
+                Data Element Length: 1
+                Wifi Protected Setup State: Configured (0x02)
+            UUID E
+                Data Element Type: UUID E (0x1047)
+                Data Element Length: 16
+                UUID Enrollee: 38833092309218839c77321b010003c4
+            RF Bands: 5 GHz (0x02)
+                Data Element Type: RF Bands (0x103c)
+                Data Element Length: 1
+                RF Bands: 5 GHz (0x02)
+            Vendor Extension
+                Data Element Type: Vendor Extension (0x1049)
+                Data Element Length: 6
+                Vendor Extension: 00372a000120
+                Vendor ID: 14122
+                Version2: 2.0
+                    WFA Extension Subelement ID: Version2 (0)
+                    WFA Extension Subelement Length: 1
+                    Version2: 0x20
+
