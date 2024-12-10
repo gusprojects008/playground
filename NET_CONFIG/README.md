@@ -7,4 +7,4 @@
 - **Network Traffic Analysis**: Through of managed interface connected at network, is performed a analysis of traffic of packets, looking for address IP or subnetmask used to local devices, case not found, the program is provided a interface for the user set the IP address manually.
 - **Manually if the user prefers**: The user configure the IP address manually, for this he must be know the CIDR(Classless Inter-Domain Routing) or subnet in that is. You can take a device connected the network and see the subnet in which he is, or see the local IP address that he uses.
 
-***This program is made for educational purposes and studies about structuring of packets data, sockets, protocols and traffic analysis, packets of network, interaction with linux kernel through netlink protocol, IP address and types***
+***This program is made for educational purposes and studies about structuring of packets data, sockets, protocols and traffic analysis, packets of network, interaction with linux kernel through netlink protocol, IP address and types.***
