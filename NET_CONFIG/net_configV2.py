@@ -10,15 +10,11 @@
 
 # PHASES STEP: VALIDATION DETAILED OF DATA AND FILTER OF DATA 
 
-# MODULES BY DEFAULT IN PYTHON
 import time
 import subprocess
 import getpass
-import random
-import socket
 import os
-import sys
-import struct
+import netifaces 
 
 # FUNCTIONALITIES ADDITIONAL: dhcp scan(checked), privacy mode(), auto config(), ipv6 optional(), verifcation for see've internet it's working
 # VERIFY IF CONFIGURATION AUTO ALREADY EXIST 
@@ -51,6 +47,10 @@ class flags:
       error = f'{colors.bright}{colors.red}[ * ]{colors.reset}'
       finalization = f'{colors.purple}{colors.bright}[ * ]{colors.reset}'      
 
+# GETTING ADAPTER OF NETWORK AUTOMATICALLY
+
+interfaces = netifaces.interfaces()
+
 # EFFECT MACHINE WRITE
 def typewriter(text):
     for char in text:
@@ -59,18 +59,18 @@ def typewriter(text):
         time.sleep(speed)
 
 # GETTING ADAPTER OF NETWORK AUTOMATICALLY
-def get_interfaces():
+def getInterfaces():
     try:
-       interfaces_user = subprocess.run(['ip', 'link', 'show'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True)
-       interfaces_user_output = re.findall(r'^\d+: ([^:]+):', interfaces_user.stdout.decode().strip(), re.MULTILINE)
-       return interfaces_user_output
+       interfaces = subprocess.run(['ip', 'link', 'show'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True)
+       interfaces_output = re.findall(r'^\d+: ([^:]+):', interfaces.stdout.decode().strip(), re.MULTILINE)
+       return interfaces_output
     except Exception as error:
            return f"Error get interfaces ); {str(error)}"
 
 # GETTING ADDRESSES: MAC FROM ADAPTER INTERAFACE FOUND...
 # THE INTERFACE COULD IT BE, THE INTERFACE ASSIGNMENT AUTOMATICALLY OR THE INTERFACE MANUALLY 
-def get_address(interface):
-    interfaces = get_interfaces()
+def getAddress(interface):
+    interfaces = getInterfaces()
     if interface in interfaces:
        try:
           interface_info = subprocess.run(["ip", "link", "show", interface], stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True)
@@ -80,6 +80,12 @@ def get_address(interface):
               return f"Error get interface address {interface} ); {str(error)}"
     else:
         return f"Error {interface} Not Found );"
+
+# GETTING ADAPTER OF NETWORK AUTOMATICALLY
+def get_interface():
+    import netifaces
+    interface_find = [interface for interface in interfaces_user if 'wlan0' in interface or 'wlp' in interface or 'wlan' in interface or 'wlan1' in interface]
+    return interface_find[0]
 
 # SHOW NETWORKS CLOSE AVAILABLE
 def show_networks(interface):
@@ -146,7 +152,7 @@ def handle_packets(packet):
     except Exception as error:
            print(f'\n{flags.error}{colors.bb} Error: TO GET INFORMATION OR SETUP NETWORK => {str(error)}{colors.reset}\n')
 
-def operation_auto(interface):
+#def operation_auto(interface):
     
 
 def validate_ipv4_ipv6(ip):
