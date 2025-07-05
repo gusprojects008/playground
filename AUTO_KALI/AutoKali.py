@@ -26,6 +26,17 @@ def read_utilities_list(utilities_file):
          print(utilities_list)
          return utilities_list
 
+def InstallUtilities(package_manager, utilities_list):
+    match package_manager:
+          case "portage":
+               install = subprocess.run([""], check=True)
+          case "pacman":
+               install = subprocess.run([], check=True)
+          case "apt":
+               install = subprocess.run([], check=True)
+          case _:
+               print(f"Unknown or unsupported package manager {package_manager}")
+
 if __name__ == "__main__":
    SudoAuthentication()
    read_utilities_list("utilities.txt")
@@ -41,14 +52,4 @@ if __name__ == "__main__":
              print(f"Se vira kkkk {str(error)}")
 """
 '''
-def InstallUtilities(package_manager, utilities_list):
-    match package_manager:
-          case "portage":
-               install = subprocess.run([""], check=True)
-          case "pacman":
-               install = subprocess.run([], check=True)
-          case "apt":
-               install = subprocess.run([], check=True)
-          case _:
-               print(f"Unknown or unsupported package manager {package_manager}")
 '''
