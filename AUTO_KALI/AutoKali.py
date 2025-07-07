@@ -23,33 +23,34 @@ def SudoAuthentication():
 def read_utilities_list(utilities_file):
     with open(utilities_file, "rt") as file:
          utilities_list = [line.strip() for line in file.readlines() if line.strip]
-         print(utilities_list)
          return utilities_list
 
 def InstallUtilities(package_manager, utilities_list):
     match package_manager:
-          case "portage":
-               install = subprocess.run([""], check=True)
+          utilities = read_utilities_list(utilities_list)
           case "pacman":
-               install = subprocess.run([], check=True)
+                try:
+                   install = subprocess.run(["pacman", "--noconfirm"] + utilities, check=True)
+                except Exception as error:
+                       print(str(error))
           case "apt":
-               install = subprocess.run([], check=True)
+               try:
+                  install = subprocess.run(["apt", "install", "yes"] + utilities, check=True)
+               except Exception as error:
+                      print(str(error))
           case _:
                print(f"Unknown or unsupported package manager {package_manager}")
 
 if __name__ == "__main__":
    SudoAuthentication()
-   read_utilities_list("utilities.txt")
-
-"""
-   args = sys.argv
-   if args == 3:
-      package_manager = args[1]
-      utilities_file = args[2]
+   parser = argparser.ArgumentParser(
+     prog="Autokali.py",
+     description="Automates the intallation of cybersecurity and pentest tools!",
+     epilog="--help"
+   )
+   package_manager = args[1]
+      utilities_file_path = args[2]
       try:
-         #InstallUtilities(package_manager, utilities_file)
+         InstallUtilities(package_manager, utilities_file_path)
       except Exception as error:
-             print(f"Se vira kkkk {str(error)}")
-"""
-'''
-'''
+             print(f"aprende a usar primeiro kkkk\n{str(error)}\nUsage:\n")
