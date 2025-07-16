@@ -1,4 +1,0 @@
-scapy
-psutil
-
-exec pip freeze > requirements.txt
