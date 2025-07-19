@@ -15,7 +15,7 @@ def SudoAuthentication():
           print()
           sys.exit(0)
        except subprocess.CalledProcessError as error:
-              print(f"\nSubprocess or authentication Error );\n{str(error)}")
+              print(f"\nSubprocess or authentication Error );")
               sys.exit(1)
 
 def read_utilities_list(utilities_file):
@@ -32,30 +32,26 @@ def InstallUtilities(package_manager, utilities_list):
                    install = subprocess.run(["pacman", "--noconfirm", "-S"] + utilities, check=True)
                 except Exception as error:
                        print(str(error))
-          case "apt":
-               try:
-                  install = subprocess.run(["apt", "install", "-y"] + utilities, check=True)
-               except Exception as error:
-                      print(str(error))
-          case _:
-               print(f"Unknown or unsupported package manager {package_manager}")
-
 def KaliTheme():
-    
+    print("Trying to install kali-desktop-i3")
+    try:
+       subsprocess.run("pacman -Syu kali-desktop-i3")
+    except Exception:
+           print("Error ")
+
 
 if __name__ == "__main__":
-   usage = "usage: AutoKali.py --install <package manager name> utilities.txt"
+   usage = "Usage mode example: AutoKali.py --install <package manager name> utilities.txt --kalitheme\nOr: AutoKali.py --kalitheme"
+   args = sys.argv
 
    SudoAuthentication()
-   
-   args = sys.argv
 
    try:
       if args[1] == "--install":
          InstallUtilities(args[2], args[3])
-      elif args[1] == "--kalitheme":
-           print("Getting Kali Linux images...")
+      elif args[1] == "--kalitheme" or args[-1] == "--kalitheme":
+           KaliTheme()
       else:
           print(f"Unknow arguments: {args}")
    except Exception as error:
-          print(f"\nError! {usage}\n{error}")
+          print(f"{usage}")
