@@ -56,6 +56,7 @@ python3 kaliarch.py --uninstall kalitheme
 ### Recommendations
 - Configure the terminal color and transparency, if necessary.
 - Set zsh as the default shell.
+- Change kitty fonts with `kitty + list-fonts`.
 
 ---
 
