@@ -18,9 +18,9 @@ O script receberá o nome do gerenciador de pacotes do sistema e uma lista `.txt
 Com o script, o usuário também pode excluir os pacotes instalados com o script, usando o comando `--uninstall utilities.txt`.
 
 O usuário também pode passar o argumento `--kalitheme` para configurar o tema padrão automático que desenvolvi, que simula a estética do KaliLinux. 
-**Ao passar o argumento `--kalitheme`, o script pode instalar alguns pacotes adicionais, mas estes podem ser removidos com `--uninstall kalitheme`. Veja o que será adicionado e configurado [Configurador](configure.sh)**
+Ao passar o argumento `--kalitheme`, o script irá instalar alguns pacotes adicionais como um terminal alternativo (kitty), wallpapers do kalilinux etc..., mas tudo poderá ser removido `--uninstall kalitheme`. Veja o que será adicionado e configurado **[Arquivo de instalação e configuração de pacotes](./kaliarch-theme/packages.json)**
 
-Com o argumento `--kalitheme`, o usuário também pode passar o argumento `--dynamic-background` com o segundo argumento um número (por exemplo, `5`) para especificar o tempo de mudança de cada papel de parede (wallpaper) com o terceiro argumento para específicar se eles devem mudar de forma ramdomica `--randomize` ou na ordem padrão dos arquivos do diretório `--orderd` e por fim o quarto argumento, o caminho do diretório para os wallpapers (e.g `~/wallpapers/`).
+Com o argumento `--kalitheme` será instalado alguns pacotes e suas configurações, o usuário também pode passar o argumento `--dynamic-background` com o segundo argumento um número (por exemplo, `5`) para especificar o tempo de mudança de cada papel de parede (wallpaper) com o terceiro argumento para específicar se eles devem mudar de forma ramdomica `--randomize` ou na ordem padrão dos arquivos do diretório `--orderd` e por fim o quarto argumento, o caminho do diretório para os wallpapers (e.g `~/wallpapers/`).
 Você pode copiar o diretório `wallpapers` deste repositório para home.
 
 > 🔴 **As configurações originais do sistema não serão modificadas ou excluídas, elas serão salvas no mesmo local, com a extensão `.old` por segurança.**
@@ -38,7 +38,7 @@ python3 kaliarch.py pacman utilities.txt
 # Desinstalar os pacotes instalados com a lista
 python3 kaliarch.py --uninstall utilities.txt
 
-# Aplicar o tema Kali-like (inclui configurações do Zsh, i3, terminal, etc)
+# Aplica o tema Kali-like e copia o diretório "wallpapers" do repositório para a home do usuário, e define um wallpaper do Kalilinux.
 python3 kaliarch.py --kalitheme
 
 # Aplicar o tema Kali-like com papel de parede dinâmico
@@ -47,7 +47,7 @@ python3 kaliarch.py --kalitheme --dynamic-background 5 --randomize ~/wallpapers/
 # Também pode usar a ordem padrão em vez de aleatória
 python3 kaliarch.py --kalitheme --dynamic-background 5 --ordered ~/wallpapers/
 
-# Remover os pacotes e arquivos de configurações instalados pelo script
+# Remover todos os pacotes e arquivos de configurações instalados pelo script
 python3 kaliarch.py --uninstall kalitheme
 ```
 ---
