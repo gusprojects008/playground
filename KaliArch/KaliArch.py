@@ -88,10 +88,10 @@ if __name__ == "__main__":
 
    SudoAuthentication()
 
-   rest = args[1:] # return the list of remaining arguments
+   remaing_arguments = args[1:] # return the list of remaining arguments
 
    try:
-      match rest:
+      match remaing_arguments:
             case ["--install-utilities", package_manager, utilities_list_path]:
                  InstallUtilities(package_manager, utilities_list_path)
             case ["--uninstall-utilities", package_manager, utilities_list_path]:
@@ -105,7 +105,7 @@ if __name__ == "__main__":
             case ["test"]:
                  InstallKaliTheme("pacman", 0, "default", "~/wallpapers")
             case _:
-                print(f"Unknown arguments: {args[1:]}")
+                print(f"Unknown arguments: {remaing_arguments}")
                 print(usage, "\n")
       sys.exit(0)
    except Exception as error:
