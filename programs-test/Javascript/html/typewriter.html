@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Title page</title>
+    <style>
+      body {
+        background-color: rgba(25, 25, 25, 1);
+        color: white;
+      }
+      
+      header {
+        font-size: 30px;
+        font-family: arial, sans-serif;
+        text-align: center;
+      }
+      
+      #container0 {
+        border: 2px solid white;
+        text-align: center;
+        width: 800px;
+        height: 400px;
+        margin: auto;
+      }
+      
+      .write_effect {
+        color: green;
+        font-family: "Courier New", monospace;
+        font-size: 45px;
+      }
+      
+      .cursor_blink {
+        width: 10px;
+        color: red;
+        animation: effectBlink 1s infinite;
+      }
+      
+      @keyframes effectBlink {
+        0%, 100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Hello</h1>
+      <h2>Welcome to the my site test</h2>
+    </header>
+    <br>
+    <div id="container0">
+      <p class="write_effect"></p>
+    </div>
+    <span id="standard_output"></span>
+    <script src="../tests/typewriter-effect.js"></script>
+  </body>
+</html>
