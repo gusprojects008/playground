@@ -116,6 +116,7 @@ function init() {
    calling update() and draw() for each particle in the array */
 function animate() {
   canvas_rendering_context.clearRect(0, 0, canvasWidth, canvasHeight);  // clear canvas
+
   if (mouse.x !== null && mouse.y !== null) {
      canvas_rendering_context.beginPath();
      canvas_rendering_context.arc(
@@ -129,6 +130,7 @@ function animate() {
     particle.update();
     particle.draw();
   });
+
   requestAnimationFrame(animate);                                       // loop
 }
 

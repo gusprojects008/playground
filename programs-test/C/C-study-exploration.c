@@ -27,16 +27,46 @@ int pointers_and_memory_addresses() {
 }
 
 int dataTypes() {
-    int numInt = 1; // 2 or 4 bytes. Stores a number without decimals. "%d", "%i".
-    float numFloat = 1.0; // 4 bytes. Stores a number with decimals. "%f".
-    double numDouble = 1.0; // 8 bytes. Stores a number with decimals. "%lf" long float.
-    char mychar = 'A'; // 1 bytes. Stores a character. "%c".
+    int Int = 1; // 2 or 4 bytes. Stores a number without decimals. "%d", "%i".
+    long int LongInt = 1000000;
+    float Float = 1.0; // 4 bytes. Stores a number with decimals. "%f".
+    double Double = 1.0; // 8 bytes. Stores a number with decimals. "%lf" long float.
+    char Char = 'A'; // 1 bytes. Stores a character. "%c".
     char string[] = "AAA"; // characters array. "%s".
     bool boolean = false;
-
-    printf("%d\n%f\n%lf\n%c\n%s\n%b\n\n", numInt, numFloat, numDouble, mychar, string, boolean); // prints the values.
+    size_t size = sizeof(Int); // size_t a data type returned by "sizeof()", "sizeof()" returns an integer unsigned.
+    
+    printf("Decimal 2 or 4 bytes: %d\nLong int 4 or 8 bytes %ld\nFloat 4 bytes %f\nFloat 4 bytes (decimal precision) %.1f\nDouble (long float) 8 bytes %lf\nChar 1 bytes %c\nString (char array)%s\nBoolean %b\nsize_t data type returned by sizeof() %zu\n", Int, LongInt, Float, Float, Double, Char, string, boolean, size);
     return 0;
 }
+
+int arrays() {
+  int* returnArray() {
+    static int arrayNum[] = {1, 2, 3, 4, 5}; // Vector
+    return arrayNum;
+  }
+  int printArray(int* array, int size) { // Could it be "void" function
+    int i;
+    for (i=0;i<size; i++) {
+      printf("%d ", array[i]);
+    }
+    printf("\n");
+  }
+  /*int* array = returnArray();
+  for (int i=0; i<5; i++) {
+    printf("%d ", array[i]);
+  }
+  printf("\n");*/
+  int array[] = {1, 2, 3, 4, 5};
+  size_t size  = sizeof(array) / sizeof(array[0]);
+  int* ptrArray = array;
+  printArray(ptrArray, size);
+  //printArray(array, size);
+  printf("Access element in the array: %d \n", array[0]);
+  printf("Get element in array using pointer: %d \n", *(ptrArray + 1));
+}
+
+//int consts
 
 int ifElse() {
     int num0 = 100;
@@ -72,8 +102,9 @@ int loopWhile() {
 int main() {
     // hello_friend();
     // pointers_and_memory_addresses();
-    // dataTypes();
+    dataTypes();
     // ifElse();
-    shortHandIfElse();
+    // shortHandIfElse();
+    //arrays();
     return 0;
 }
