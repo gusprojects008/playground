@@ -1,1 +1,0 @@
-../../../usr/share/kitty/shell-integration/bash/kitty.bash
