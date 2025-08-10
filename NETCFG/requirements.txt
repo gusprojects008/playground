@@ -1,4 +1,3 @@
-scapy
-psutil
-
-exec pip freeze > requirements.txt
+iw
+wpa_supplicant
+dhcpcd

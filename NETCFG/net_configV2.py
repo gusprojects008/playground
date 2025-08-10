@@ -1,64 +1,19 @@
 # SCRIPT FOR ARCH LINUX, CONFIGURATION OF NETWORK, SIMPLE AND EASY!!!
 
-# INPUTS EXPLAINING WHAT SHOULD INSERT AT HER
-# CREATE ARCHIVER OF CONFIGURATION, FOR INIT WITH SYSTEM AND CONNECT IN NETWORK, OPTIONAL
-# INPUT FOR USER CHOSE IF HE WANTS, DEFINE A SERVER DNS AUTOMATE OR MANUALLY!!!
-
-# ALERT FOR USER EXECUTE THE PROGRAM IN VENV(AMBIENT VIRTUAL PYHTHON) INSTALL IWD AND 
-# LIBRARIESS NEEDED IN ORDER. THIS PROGRAM SHOULD BE INSTALLED IDEALLY IN CHROOT IN MOMENT OF
-# INSTALLATION OF ARCH LINUX!!! 
-
-# PHASES STEP: VALIDATION DETAILED OF DATA AND FILTER OF DATA 
-
 import time
 import subprocess
 import getpass
 import os
 import netifaces 
 
-# FUNCTIONALITIES ADDITIONAL: dhcp scan(checked), privacy mode(), auto config(), ipv6 optional(), verifcation for see've internet it's working
-# VERIFY IF CONFIGURATION AUTO ALREADY EXIST 
-
-# CODES ANSI FOR COLERED THE TERMINAL AND TEXT APRESENTED FOR USER
-class colors:
-      red = "\033[31m"
-      green = "\033[32m"
-      blue = "\033[34m"
-      cyan = "\033[36m"
-      purple = "\033[35m"
-      reset = "\033[0m"
-      pink = "\033[95m"
-
-      # FORMAT TEXT
-      bright = '\033[1m'
-      background_green = '\033[32m'
-      background_red = '\033[41m'
-      blink = '\033[5m'
-      sublime = '\033[4m'
-
-      # COLOR + BRIGHT
-      sb = f'{bright}{sublime}'
-      gb = f'{bright}{green}'
-      bb = f'{bright}{blue}'
-
-# FLAGS FOR ALERT THE USER
-class flags:
-      ok = f'{colors.bright}{colors.green}[ * ]{colors.reset}'
-      error = f'{colors.bright}{colors.red}[ * ]{colors.reset}'
-      finalization = f'{colors.purple}{colors.bright}[ * ]{colors.reset}'      
-
-# GETTING ADAPTER OF NETWORK AUTOMATICALLY
-
 interfaces = netifaces.interfaces()
 
-# EFFECT MACHINE WRITE
 def typewriter(text):
     for char in text:
         print(char, end='', flush=True) 
         speed = 0.01
         time.sleep(speed)
 
-# GETTING ADAPTER OF NETWORK AUTOMATICALLY
 def getInterfaces():
     try:
        interfaces = subprocess.run(['ip', 'link', 'show'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True)
