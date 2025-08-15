@@ -341,15 +341,15 @@ def init_config():
     # CONFIGURATION BASED IN INPUT OF THE USER!
     #if 
 
-# VERFICATION IS USER IT'S AT IN AMBIENT PYTHON FOR RUNNING CODE WITH COMPACTIBILITY AND SECURITY!!! 
-def verification_user_environ():
-    if 'VIRTUAL_ENV' in os.environ:       
-       path_file = './log_netconfig.txt'
- #      install(path_file)
-       init_config()
-    else:
-        text_alert = f"{flags.error}{colors.bb} ENTER AN ENVIRONMENT VIRTUAL {colors.red}PYTHON{colors.bb} FOR {colors.red}RUNNING CODE{colors.bb} WITH {colors.red}COMPACTIBILITY{colors.bb} AND {colors.red}SECURITY{colors.bb} !!!{colors.reset}\n"
-        typewriter(text_alert)
-        subprocess.run(['source', '/path/to/new/virtual/environment/bin/activate'], shell=True)
+if __name__ == "__main__":
+   args = sys.argv[:1]
 
-verification_user_environ()
+   match args:
+         case ["--prompt"]:
+         case ["--script"]:
+         case ["--load-conf"]:
+         case ["--deamon"]:
+
+
+   match
+   

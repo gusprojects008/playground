@@ -58,7 +58,7 @@ int arrays() {
   }
   printf("\n");*/
   int array[] = {1, 2, 3, 4, 5};
-  size_t size  = sizeof(array) / sizeof(array[0]);
+  size_t size = sizeof(array) / sizeof(array[0]);
   int* ptrArray = array;
   printArray(ptrArray, size);
   //printArray(array, size);

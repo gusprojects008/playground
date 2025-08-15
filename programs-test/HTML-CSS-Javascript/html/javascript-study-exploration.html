@@ -33,6 +33,11 @@
         color: red;
         animation: effectBlink 1s infinite;
       }
+
+      #standard_output {
+        color: green;
+        font-size: 30px;
+      }
       
       @keyframes effectBlink {
         0%, 100% {
@@ -50,10 +55,12 @@
       <h2>Welcome to the my site test</h2>
     </header>
     <br>
-    <div id="container0">
-      <p class="write_effect"></p>
-    </div>
-    <span id="standard_output"></span>
-    <script src="../scripts/javascript-study-exploration.js"></script>
+    <main>
+      <div id="container0">
+        <p class="write_effect"></p>
+        <span id="standard_output" name="stdout"></span>
+      </div>
+    </main>
+    <script src="/scripts/javascript-study-exploration.js"></script>
   </body>
 </html>
