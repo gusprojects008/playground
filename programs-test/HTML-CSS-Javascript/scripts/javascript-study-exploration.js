@@ -1,8 +1,8 @@
 // javascriṕt resume
 
-var testVar = "Hello friend, this a var"; // global scope and can be redeclared
-let testLet = "Hello friend, this is a let"; // block scope and cannot be redeclared, just reassigned. But in this case, it is global.
-const testConst = "Hello friend, this is a const"; // block scope and cannot be redeclared. But in this case, it is global.
+var myVar = "this a var"; // global scope and can be redeclared
+let myLet = "this is a let"; // block scope and cannot be redeclared, just reassigned. But in this case, it is global.
+const myConst = "this is a const"; // block scope and cannot be redeclared. But in this case, it is global.
 
 const stdout_DOM = document.getElementById("standard_output"); // standard output for the functions
 
@@ -21,15 +21,10 @@ function typerEffect(text, output) {
     }
     else {
       output.appendChild(cursor);
-            
     }
   }
   typer();
-} /* could also use a function self-invoking
-
-for (let elem of typer_outputs) {
-  typerEffect(testLet, elem);
-} */
+}
 
 function outputs() {
   // other ways to obtain elements
@@ -41,27 +36,12 @@ function outputs() {
 //  document.write("Using document.write()"); // Insert text ou code directly in HTML *danger, especially if the document has not yet been fully loaded*
 }
 
-
-function comparasionOperators() {
-  console.log("Javascript comparassion operators:")
-  let a = 1; let b = "1";
-  let c = 1; let d = 1;
-
-  // "equal to" operator, make a value comparison between two objects
-  if (a == b) {
-    console.log(`a: ${a} is equal to b: ${b} in value "=="`);
-  } else if (a === b) // make a value and type comparison between two objects
-    console.log(`a: ${a} is equal to b: ${b} in type and value "==="`);
-  else {
-    console.log(`a: ${a} is different from b: ${b} in value "==" and type and value "==="`);
-  } // !== and !=== follow the same logic
-
-  ternaryComparasion1 = c === d ? console.log(`c: ${c} is equal to d: ${d} in type and value "==="`) : console.log(`c: ${c} is different from d: ${d} in type and value "==="`);
-  ternaryComparasion2 = c == d ? console.log(`c: ${c} is equal to d: ${d} in value "=="`) : console.log(`c: ${c} is different from d: ${d} in value "=="`);
-}
-
 function dataTypes() {
+  /* Almost all data in JS is an object. These are primitive data types, but they can be transformed into temporary objects when one
+  of their methods is called.
+  */
   console.log("Javascript datatypes:")
+
   // Booleans
   boolean0 = true;
   boolean1 = false;
@@ -70,7 +50,7 @@ function dataTypes() {
   integer = 0;
 
   // Strings
-  string = "Hi";
+  string = "Hi, my name is Gustavo (;";
 
   // A simple object. Because all javascript object already work internally and are in dictonary format
   const person = {"name": "Guts", "age": 17};
@@ -88,6 +68,42 @@ function dataTypes() {
 
   // undefined
   let undefinedValue;
+
+  // Strings methods
+  let slicedString = string.slice(15, 22);
+  console.log(`Before: ${string}\nAfter "slice" method: ${slicedString}\n`);
+
+  let stringUpperCase = string.toUpperCase();
+  let stringLowerCase = string.toUpperCase();
+  console.log(`String upper and lower case:\nUpper: ${stringUpperCase}\nLower case: ${stringLowerCase}\n`);
+
+  let stringReplace = string.replace("Gustavo", "Elliot");
+  console.log(`String replace method: ${stringReplace}\n`)
+
+  // Numbers methods
+  let bigInt = BigInt(100);
+  console.log(`BigInt number: ${bigInt}`)
+
+  let NumberTostr = toString(numbers[0]);
+  console.log(`Number to string: ${NumberTostr}`);
+}
+
+function comparasionOperators() {
+  console.log("Javascript comparassion operators:")
+  let a = 1; let b = "1";
+  let c = 1; let d = 1;
+
+  // "equal to" operator, make a value comparison between two objects
+  if (a == b) {
+    console.log(`a: ${a} is equal to b: ${b} in value "=="`);
+  } else if (a === b) // make a value and type comparison between two objects
+    console.log(`a: ${a} is equal to b: ${b} in type and value "==="`);
+  else {
+    console.log(`a: ${a} is different from b: ${b} in value "==" and type and value "==="`);
+  } // !== and !=== follow the same logic
+
+  ternaryComparasion1 = c === d ? console.log(`c: ${c} is equal to d: ${d} in type and value "==="`) : console.log(`c: ${c} is different from d: ${d} in type and value "==="`);
+  ternaryComparasion2 = c == d ? console.log(`c: ${c} is equal to d: ${d} in value "=="`) : console.log(`c: ${c} is different from d: ${d} in value "=="`);
 }
 
 /* javascript functions are not executed immediately. They are "saved for later use" and will be executed later, when
@@ -149,11 +165,50 @@ function functions() {
   console.log(fullName());
 }
 
-// Javascritp object
+function arrays() {
+  // main Array methods
+  let simpleArray = [1, 2, 3, 4, 5];
+  let ArrayObject = new Array (1, 2, 3, 4, 5);
+  console.log(`simple Array: ${simpleArray}\nArray object: ${ArrayObject}`, ArrayObject);
+
+  console.log("Using simple array for examples!");
+  console.log("Return array length:", simpleArray.length); // array length
+  console.log("at() method to return first element:", simpleArray.at(0), "\nat() method to return last value:", simpleArray.at(-1)); // Return element by index
+  console.log(`Replace an element value of a array. Before: ${simpleArray}`);
+  simpleArray[0] = 2; // replace an element of an Array
+  console.log(`After replace: ${simpleArray}`);
+  console.log("Remove the first element from array (shift()). Before:", simpleArray);
+  simpleArray.shift();
+  console.log("After (shift()):", simpleArray);
+  console.log("Remove the last element from array (pop()). Before:", simpleArray)
+  simpleArray.pop();
+  console.log("After (pop()):", simpleArray);
+  console.log("Add new value at the end of the array (push()). Before:", simpleArray)
+  simpleArray.push(6);
+  console.log("After (push()):", simpleArray);
+  console.log("Return index according to element (indexOf()):", simpleArray.indexOf(3));
+  console.log("Removes or adds an element to the array (splice(index, count to del, value)). Before:", simpleArray);
+  simpleArray.splice(0, 0, 1);
+  console.log("After:", simpleArray);
+  console.log("Reverse a array (reverse()). Before:", simpleArray);
+  simpleArray.reverse();
+  console.log("After:", simpleArray);
+  console.log("Iterate over array elements, executing a function for each of them (forEach(function, element)). :");
+  console.log("Print element for each element from array:");
+  function printElement(e) {console.log(e)};
+  simpleArray.forEach(printElement);
+  console.log("Iterate over each element of the array, and modify the array (map(function refer)). Before:", simpleArray);
+  function toStringNums(num) {return num.toString()};
+  let toString = simpleArray.map(toStringNums);
+  console.log("After:", toString);
+  
+}
+
+// Javascript objects
 function objectsJs() {
   console.log("Javascript objects:")
 
-  const person0 = {
+  const Person0 = {
     firstname: "gustavo",
     lastname: "araujo",
     age: 17,
@@ -168,9 +223,9 @@ function objectsJs() {
   */
 
   // crate a new person
-  const personObj = Object.create(person0);
-  personObj.age = 18;
-  console.log("Object person0: ", person0, "\nObject create and update: ", personObj);
+  const PersonObj = Object.create(Person0);
+  PersonObj.age = 18;
+  console.log("Object person0: ", Person0, "\nObject create and update: ", PersonObj);
   
   //console.log(person1);
 
@@ -179,19 +234,102 @@ function objectsJs() {
   const myObj = Object.fromEntries(linux_subsystems);
   console.log(myObj.mac80211);
 
-  const person1 = {firstname: "Anna", lastname: "Moraes", age: 16};
+  const Person1 = {firstname: "Anna", lastname: "Moraes", age: 16};
   
   // Assign source properties to target
-  console.log("Object assing: ", Object.assign(person0, person1));
+  console.log("Object assing: ", Object.assign(Person0, Person1));
+
+  /* Constructors functions are used with "new" to create or initialize objects, or return an object directly.
+  "this" is similar to python "self" in that both are used to refer to the instance itself, but the value of "this" depends on how
+  the function is called.
+  */
+  function Person2(name, age, sex) {
+    this.name = name;
+    this.age = age;
+    this.sex = sex;
+  }
+
+  let Person2Obj = new Person2("gustavo", 17, "masculine");
+  console.log(Person2Obj);
+  // Add a new Property
+  Person2.prototype.country = "Brazil";
+  Person2Obj = new Person2("gustavo", 17, "masculine");
+  // console.log(`Defining a new value (prototype) in ${Person2Obj}: `); Wrong!!!
+  console.log("Defining a new value (prototype) in", Person2Obj, " ");
+
+  // Objects destructuring
+  let {name, age} = Person2Obj;
+  let numbers = [1, 2, 3, 4, 5];
+  let [one, two] = numbers;
+ 
+  console.log("Destructuring Object 'Person2': ", {name, age});
+  console.log(`Destructuring Array "numbers": ${[one, two]}`);
 }
 
-//outputs();
+// JS JSON (JavaScript Object Notation)
+function json() {
+  let JSobject = {
+    Name: "Gustavo",
+    Age: 17,
+    Country: "Brazil",
+    Sex: "Masculine"
+  }; // This is an just javasript object
 
+  console.log("Javascript Object", JSobject);
+  let jsonData = JSON.stringify(JSobject);
+  console.log(`Javascript Object to JSON string, with stringify method: ${jsonData}`);
+  let ObjToJSON = JSON.parse(jsonData);
+  console.log("JSON string", jsonData, "to Javascript Object, with the method JSON.parse():", ObjtoJSON);
+}
 
+// JS Switch
+function switchs(num) {
+  switch (num) {
+    case 0:
+      console.log(true);
+      break;
+    case 1:
+      console.log(false); 
+      break;
+    default:
+      console.log(` ${num} isn't 0 or 1 );`);
+  };
+}
 
 // Classes
+function classes() {
+  class PersonFullname {
+    constructor(name) {
+      this.fullname = name;
+    }
+    present() {
+      return "Fullname is " + this.fullname;
+    }
+  }
+
+  // Methods inheritance
+  class PersonData extends PersonFullname {
+    constructor(fullname, country) {
+      super(fullname); // Run the parent class constructor and initalize the "this" of the child class
+      this.country = country;
+    }
+    show() {
+      return this.present() + " and the country is " + this.country;
+    }
+    static any() {
+      return "\nanything"
+    }
+  }
+  PersonDataObj = new PersonData("Gustavo Araújo", "Brazil");
+  console.log(PersonDataObj.show(), PersonData.any());
+}
+
+// iterations
+// Promisses
+// Typed arrays
+// RegExp
 // Js Browser DOM
 // JS Web APIs
 // Js AJAX
 // JS Sets & Maps
-// JS Async
+// JS Programming
