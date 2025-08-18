@@ -324,12 +324,151 @@ function classes() {
   console.log(PersonDataObj.show(), PersonData.any());
 }
 
-// iterations
-// Promisses
-// Typed arrays
-// RegExp
-// Js Browser DOM
-// JS Web APIs
-// Js AJAX
+// JS Loops
+function loops() {
+  // for loop
+  for (let i = 0; i < 5; i++) {
+    console.log(i); 
+  };
+
+  // while loop
+  let a = 10;
+  let b = 5;
+  while (a > b) {
+    console.log(`${a}`);
+    a--;
+  };
+}
+
+// JS Promisses
+function promises() {
+  // "promise" is a object used to perform asynchronous operations
+  // async and await are the easiest and most readable ways to do it
+  /*
+  let myPromise = new Promise(function (Resolve, Reject) {
+    let result = true;
+    if (result) {
+      // Resolve("Success");
+      setTimeout(Resolve, 3000, "Success");
+    } else {
+      // Reject("Failed");
+      setTimeout(Reject, 1000, "Failed");
+    }
+  });
+  myPromise.then((msg) => {
+    console.log(msg);
+  }).catch((error) => {
+    console.log(error);
+  });
+  */
+
+  // async makes a promise, await waits for its result
+  async function simplePromise() {
+    const response = await fetch("/scripts/json-example.json");
+    if (response.ok) {
+      return await response.json(); // .json() is a object method
+    } else {
+      throw new Error("Network error or failed request );");
+    }
+    };
+
+  (async function () {
+    try {
+      let serverResult = await simplePromise();
+      console.log(serverResult);
+    } catch (error) {
+      console.log("Error", error);
+    }
+  }());
+    
+}
+
 // JS Sets & Maps
-// JS Programming
+function SetsandMaps() {
+  let set = new Set(["a", "b", "c"]); // stores a collection of unique values, which can be of different types
+  console.log("Set created:", set);
+  set.add("d");
+  //set.add("d"); // error
+  console.log("Set add() method", set);
+  set.delete("d");
+  console.log("Set delete() method", set);
+  set.clear();
+  console.log("Set clear() method", set);
+
+  let map = new Map([
+    ["Yes", true],
+    ["Not", false]
+  ]); // key-value structure
+  console.log("Map Map() method", map)
+  map.set("BlaBla", 100);
+  console.log("Map set() method", map)
+  map.delete("BlaBla");
+  console.log("Map delete() method", map);
+  console.log("Map get() method", map);
+}
+
+// JS HTML DOM
+function HTMLDOM() {
+  let ClickMe = document.getElementById("click-me"); 
+  let container0 = document.getElementById("container0");
+
+  document.body.style.background = "red"; // set a new style property
+  document.body.setAttribute("name", "myBody"); // Change or add the attribute value of the HTML element
+
+  let newElement = document.createElement("div");
+  let child = document.createElement("p");
+  newElement.appendChild(child).textContent = "Hello, New Element Child (;";
+  document.body.appendChild(newElement);
+  newElement.style.background = "Blue";
+
+  document.body.onload = alert(`Hello client, your cookie: ${document.cookie}`) // when the user enters the page
+  document.body.ununload = alert(`Goodbye client, your cookie: ${document.cookie}`) // when the user enters the page
+  container0.onmouseover = alert("onmouseover event");
+  container0.onmouseout = alert("onmouseout event");
+  // onmouseup, onmousedown and onclick
+  
+  container0.addEventListener("mouseup", (e) => {
+    container0.style.background = "green";
+  });
+  container0.addEventListener("mousedown", (e) => {
+    container0.style.background = "blue";
+  });
+
+  // firstChild, nodeValue, createTextNode, childNodes and removeChild.
+}
+
+// JS Browser BOM and WEB APIs
+function BrowserObjectModel() {
+  // BOM (Browser Object Model) allows the javascript to interact with the user's browser
+  /*let windowData = [window.innerHeight, window.innerWidth];
+  console.log("User browser window Height and Width", windowData);
+  
+  console.log("Open a new window!");
+  window.open();
+
+  let usercookie = "username=Gustavo password=12345678";
+  document.cookie = usercookie;
+  console.log("Sets a cookie that can be sent to the server. Your cookies now: ", document.cookie);
+  */
+
+  /*
+  return {
+    backHistory: function () {
+      console.log("Window history API BOM. Back one page!");
+      window.history.back();
+    },
+    back2pagesHistory: function () {
+      console.log("Window history API BOM. Go to two back pages!");
+      window.history.go(-2);
+    }
+  }
+
+  */
+
+  localStorage.setItem("name", "Gustavo");
+  console.log("Get your name between localStorage:", localStorage.getItem("name"));
+
+  // Workers, Fetch...
+}
+
+// Js AJAX

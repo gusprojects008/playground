@@ -38,7 +38,22 @@
         color: green;
         font-size: 30px;
       }
+
+      #click-me {
+      font-size: 1.5rem;
+      color: green;
+      }
+
+      #get-data {
+      font-size: 1.5rem;
+      color: purple;
+      }
       
+      #BrowserFunctions {
+        font-size: 1.5rem;
+        color: blue;
+      }
+
       @keyframes effectBlink {
         0%, 100% {
           opacity: 1;
@@ -58,6 +73,11 @@
     <main>
       <div id="container0">
         <p class="write_effect"></p>
+        <button onclick=HTMLDOM() id="click-me">Click-me</button>
+        <button onclick=promises() id="get-data">Get data</button>
+        <button onclick="BrowserObjectModel().backHistory()" id="BrowserFunctions">Back page</button>
+        <button onclick="BrowserObjectModel().back2pagesHistory()" id="BrowserFunctions">Go two back pages</button>
+        <button onclick=BrowserObjectModel() id="BrowserFunctions">localStorage, view in console.log()</button>
         <span id="standard_output" name="stdout"></span>
       </div>
     </main>
