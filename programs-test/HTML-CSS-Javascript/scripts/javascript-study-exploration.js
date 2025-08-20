@@ -470,5 +470,3 @@ function BrowserObjectModel() {
 
   // Workers, Fetch...
 }
-
-// Js AJAX
