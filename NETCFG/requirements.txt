@@ -1,3 +1,0 @@
-iw
-wpa_supplicant
-dhcpcd
