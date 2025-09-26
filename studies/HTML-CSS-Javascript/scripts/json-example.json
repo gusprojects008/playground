@@ -1,0 +1,12 @@
+{
+  "Clients": {
+    "names": [
+      "Gustavo", "Francisco", "Maria"
+     ]
+   },
+  "Products": {
+    "items": [
+      "Qboa 1l", "Banana", "Apple"
+    ]
+   }  
+}

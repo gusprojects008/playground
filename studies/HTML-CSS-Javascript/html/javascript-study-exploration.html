@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Title page</title>
+    <style>
+      body {
+        background-color: rgba(25, 25, 25, 1);
+        color: white;
+      }
+      
+      header {
+        font-size: 30px;
+        font-family: arial, sans-serif;
+        text-align: center;
+      }
+      
+      #container0 {
+        border: 2px solid white;
+        text-align: center;
+        width: 800px;
+        height: 400px;
+        margin: auto;
+      }
+
+      #container0 button {
+        font-size: 1.5rem;
+        color: green;
+      }
+     
+      .write_effect {
+        color: green;
+        font-family: "Courier New", monospace;
+        font-size: 45px;
+      }
+      
+      .cursor_blink {
+        width: 10px;
+        color: red;
+        animation: effectBlink 1s infinite;
+      }
+
+      #standard_output {
+        color: green;
+        font-size: 30px;
+      }
+
+      @keyframes effectBlink {
+        0%, 100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Hello</h1>
+      <h2>Welcome to the my site test</h2>
+    </header>
+    <br>
+    <main>
+      <div id="container0">
+        <p class="write_effect"></p>
+        <button onclick=HTMLDOM() id="click-me">Click-me</button>
+        <button onclick=promises() id="get-data">Get data</button>
+        <button onclick="BrowserObjectModel().backHistory()" id="BrowserFunctions">Back page</button>
+        <button onclick="BrowserObjectModel().back2pagesHistory()" id="BrowserFunctions">Go two back pages</button>
+        <button onclick=BrowserObjectModel() id="BrowserFunctions">localStorage, view in console.log()</button>
+        <span id="standard_output" name="stdout"></span>
+      </div>
+    </main>
+    <script src="/scripts/javascript-study-exploration.js"></script>
+  </body>
+</html>
