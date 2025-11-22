@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
+#include <string.h>
 
 // vectors
 int arrays() {
@@ -42,7 +44,89 @@ int linkedList() {
   return 0;
 }
 
+int minimumOperations(int* nums, size_t numsSize) {
+  int minimumOperationsRes = 0;
+  for (int i=0;i<numsSize;i++) {
+    int result = (nums[i] % 3) != 0;
+    if (result == 1) {
+      minimumOperationsRes++;
+    };
+  };
+  return minimumOperationsRes;
+}
+
+int romanToInt(char* s) {
+  int value(char c) {
+      switch(c) {
+          case 'I': return 1;
+          case 'V': return 5;
+          case 'X': return 10;
+          case 'L': return 50;
+          case 'C': return 100;
+          case 'D': return 500;
+          case 'M': return 1000;
+      }
+      return 0;
+  }
+  int result = 0;
+  size_t slength = strlen(s);
+  /*if ((1 <= slength <= 15) == 0) {
+    return 1;
+  };*/
+  for (size_t i=0;i<slength;i++) {
+    int curr = value(s[i]);
+    /*if (curr == 0) {
+      return 1;
+    }*/
+    int next = (i + 1 < slength) ? value(s[i + 1]) : 0;
+    if (curr < next) {
+      result -= curr;
+    } else {
+      result += curr;
+    }
+  }
+  /*if ((1 <= result <= 3999) == 0) {
+    return 1;
+  }*/
+  return result;
+}
+
+char* longestCommonPrefix(char** strs, size_t strsSize) {
+  if ((strsSize < 1) || (strsSize > 200)) return "";
+  size_t minLen = strlen(strs[0]);
+  for (int i=1;i<strsSize;i++) {
+    size_t len = strlen(strs[i]);
+    if (len < minLen) minLen = len;
+  };
+  char* prefix = malloc(sizeof(char) * (minLen + 1));
+  int index = 0;
+  for (int i=0;i<minLen;i++) {
+    char c = strs[0][i];
+    for (int j=1;j<strsSize;j++) {
+      if (strs[j][i] != c) {
+        prefix[index] = '\0';
+        return prefix;
+      }
+    }
+    prefix[index++] = c;
+  }
+  prefix[index] = '\0';
+  return prefix;
+}
+
 int main() {
-  linkedList();
+  char* strs[] = {"fly", "flamengo", "flanelinha"}; 
+  size_t strs_len = strlen(strs[0]);
+  char* result = longestCommonPrefix(strs, strs_len);
+  printf("%s\n", result);
+  free(result);
   return 0;
 }
+
+/*
+0011 + 2
+0101
+&
+1101 == ~ 0010
+0101
+*/
