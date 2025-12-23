@@ -114,19 +114,153 @@ char* longestCommonPrefix(char** strs, size_t strsSize) {
   return prefix;
 }
 
+int isPalindrome(int x) {
+  if (x < 0) return 0;
+  if (x < 10) return 1;
+
+  int result = 0;
+  int defaultNum = x;
+  x = abs(x);
+
+  while (x != 0) {
+    result = result * 10 + (x % 10);
+    x /= 10; 
+  }
+
+  return (result == defaultNum) ? 1 : 0;
+}
+
+int* twoSum(int* nums, size_t numsSize, int target, size_t* returnSize) {
+  int* result = (int*)malloc(2 * sizeof(int)); // allocates an array for 2 integers
+  *returnSize = 2; // indicates the size (number of value) that an array should return
+  for (int i = 0; i < numsSize; i++) {
+    for (int j = i + 1; j < numsSize; j++) {
+      if (nums[i] + nums[j] == target) {
+        result[0] = nums[i];
+        result[1] = nums[j];
+        return result;
+      }
+    }
+  }
+  *result = 0;
+  free(result);
+  return NULL;
+};
+
+struct ListNode {
+  int val;
+  struct ListNode* next;
+};
+struct ListNode* mergeTwoLists(struct ListNode* list1, struct ListNode* list2) {
+  struct ListNode *p = list1, *q = list2;
+  struct ListNode dummy;
+  struct ListNode *tail = &dummy;
+  while (p != NULL && q != NULL) {
+    if (p->val <= q->val) {
+       tail->next = p;
+       p = p->next;
+    } else {
+      tail->next = q;
+      q = q->next;
+    }
+    tail = tail->next;
+  }
+  if (p != NULL) tail->next = p;
+  if (q != NULL) tail->next = q;
+  return dummy.next;
+}
+
+bool isValid(char* s) {
+  char stack[10000];
+  int idx = -1;
+  size_t len = strlen(s);
+  for (int i = 0; i < len; i++) {
+    if (s[i] == '(' || s[i] == '{' || s[i] == '[') {
+      stack[++idx] = s[i];
+    } else {
+      if (idx == -1) return false;
+      if (s[i] == ')' && stack[idx] != '(') return false;
+      if (s[i] == '}' && stack[idx] != '{') return false;
+      if (s[i] == ']' && stack[idx] != '[') return false;
+      idx--;
+    } 
+  }
+  return idx == -1;
+}
+
+char* gcdOfStrings(char* str1, char* str2) {
+  if (strlen(str2) > strlen(str1)) {
+    char* tmp = str2;
+    str2 = str1;
+    str1 = tmp;
+  }
+  size_t len1 = strlen(str1);
+  size_t len2 = strlen(str2);
+  size_t total = len1 + len2;
+  char* concat1 = malloc(total + 1);
+  char* concat2 = malloc(total + 1);
+  strcpy(concat1, str1);	
+  strcat(concat1, str2);	
+  strcpy(concat2, str2);
+  strcat(concat2, str1);
+  if (strcmp(concat1, concat2) != 0) {
+    free(concat1);	
+    free(concat2);
+    return "";
+  };
+  free(concat1);	
+  free(concat2);
+  if (len1 == len2) return str1;
+  return gcdOfStrings(str1 + len2, str2);
+}
+
+char* mergeAlternately(char* word1, char* word2) {
+  size_t w1len = strlen(word1);
+  size_t w2len = strlen(word2);
+  size_t total = w1len + w2len;
+  char* result = /*(char*)*/malloc(total + 1);
+  int p1 = 0, p2 = 0;
+  while (p2 < w1len || p2 < w2len) {
+    if (p2 < w1len) {
+      result[p1] = word1[p2];
+      p1++;
+    };
+    if (p2 < w2len) {
+      result[p1] = word2[p2];
+      p1++;
+    };
+    p2++;
+  }
+  result[p1] = '\0';
+  return result;
+}
+
+bool* kidsWithCandies(int* candies, size_t candiesSize, int extraCandies, int* returnSize) {
+  *returnSize = candiesSize;
+  bool* result = /*(bool*)*/malloc(sizeof(bool) * candiesSize);
+  int max = candies[0];
+  for (int i = 0; i < candiesSize; i++) {
+    int candy = candies[i];
+    if (candy > max) {
+      max = candy;
+    }
+  }
+  for (int i = 0; i < candiesSize; i++) {
+    result[i] = (candies[i] + extraCandies >= max);
+  }
+  return result;
+}
+
 int main() {
-  char* strs[] = {"fly", "flamengo", "flanelinha"}; 
-  size_t strs_len = strlen(strs[0]);
-  char* result = longestCommonPrefix(strs, strs_len);
-  printf("%s\n", result);
+  int candies[4] = {1, 2, 3, 4};
+  int extraCandies = 1;
+  size_t candiesSize = sizeof(candies) / sizeof(candies[0]);
+  int returnSize;
+  bool* result = kidsWithCandies(candies, candiesSize, extraCandies, &returnSize);
+  for (int i = 0; i < returnSize; i++) {
+    printf("%d", result[i]);
+  }
+  printf("\n");
   free(result);
   return 0;
 }
-
-/*
-0011 + 2
-0101
-&
-1101 == ~ 0010
-0101
-*/
