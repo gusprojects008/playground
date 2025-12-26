@@ -251,16 +251,21 @@ bool* kidsWithCandies(int* candies, size_t candiesSize, int extraCandies, int* r
   return result;
 }
 
-int main() {
-  int candies[4] = {1, 2, 3, 4};
-  int extraCandies = 1;
-  size_t candiesSize = sizeof(candies) / sizeof(candies[0]);
-  int returnSize;
-  bool* result = kidsWithCandies(candies, candiesSize, extraCandies, &returnSize);
-  for (int i = 0; i < returnSize; i++) {
-    printf("%d", result[i]);
+int fibonacci_number(int n) {
+  if (n == 0) return 0;
+  if (n == 1) return 1;
+  int pre1 = 1, pre2 = 1, res = 1;
+  for (int i = 0; i < n - 2; i++;) {
+    res = pre1 + pre2;
+    pre1 = pre2;
+    pre2 = res;
   }
-  printf("\n");
-  free(result);
+  return res;
+}
+
+int main() {
+  int n = 6;
+  int result = fibonacci_number(n);
+  printf("Result: %d\n", result);
   return 0;
 }

@@ -62,17 +62,33 @@ def canPlaceFlowers(flowerbed: list[int], n: int) -> bool:
     length = len(flowerbed)
     while i < len(flowerbed):
         if flowerbed[i] == 0:
-            left_empty = (i == 0) or (flowerbed[i - 1] == 0
+            left_empty = (i == 0) or flowerbed[i - 1] == 0
             right_empty = (i == length - 1) or (flowerbed[i + 1] == 0)
             if left_empty and right_empty:
                 flowerbed[i] = 1
                 n -= 1
                 if n == 0:
                     return True
-               i += 2
-               continue
-             i += 1
+                i += 2
+                continue
+            i += 1
         
+def reverseVowels(s: str) -> str:
+    vowels = "aeiouAEIOU"
+    wl = list(s)
+    start = 0
+    end = len(s) - 1
 
-places = [1,0,0,0,1]
-print(canPlaceFlowers(places, 0))
+    while start < end:
+        while start < end and vowels.find(wl[start]) == -1:
+            start += 1
+        while start < end and vowels.find(wl[end]) == -1:
+            end -= 1
+        wl[start], wl[end] = wl[end], wl[start]
+        start += 1
+        end -= 1
+
+    return "".join(wl)
+        
+s = "eguavoa"
+print(reverseVowels(s))
