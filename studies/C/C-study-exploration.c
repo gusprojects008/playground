@@ -343,5 +343,11 @@ int main() {
     // unions();
     // enums();
     // fileHandling();
+    int target = 5;
+    for (int i = 0; i < target; i++) {
+      for (int j = i + 0; j < target; j++) {
+        printf("%d %d\n", i, j);
+      }
+    }
     return 0;
 }

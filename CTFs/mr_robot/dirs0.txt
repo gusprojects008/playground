@@ -1,0 +1,7 @@
+/feed/
+/wp-admin/
+/inform/
+/comments/feed/
+/wp-includes/wlwmanifest.xml
+/xmlrpc.php
+

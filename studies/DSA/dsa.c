@@ -130,23 +130,6 @@ int isPalindrome(int x) {
   return (result == defaultNum) ? 1 : 0;
 }
 
-int* twoSum(int* nums, size_t numsSize, int target, size_t* returnSize) {
-  int* result = (int*)malloc(2 * sizeof(int)); // allocates an array for 2 integers
-  *returnSize = 2; // indicates the size (number of value) that an array should return
-  for (int i = 0; i < numsSize; i++) {
-    for (int j = i + 1; j < numsSize; j++) {
-      if (nums[i] + nums[j] == target) {
-        result[0] = nums[i];
-        result[1] = nums[j];
-        return result;
-      }
-    }
-  }
-  *result = 0;
-  free(result);
-  return NULL;
-};
-
 struct ListNode {
   int val;
   struct ListNode* next;
@@ -255,7 +238,7 @@ int fibonacci_number(int n) {
   if (n == 0) return 0;
   if (n == 1) return 1;
   int pre1 = 1, pre2 = 1, res = 1;
-  for (int i = 0; i < n - 2; i++;) {
+  for (int i = 0; i < n - 2; i++) {
     res = pre1 + pre2;
     pre1 = pre2;
     pre2 = res;
@@ -263,9 +246,171 @@ int fibonacci_number(int n) {
   return res;
 }
 
+int* twoSumBruteForce(int* nums, size_t numsSize, int target, size_t* returnSizePtr) {
+  *returnSizePtr = 2;
+  int* result = malloc(sizeof(int) * *returnSizePtr);
+  for (int i = 0; i < numsSize; i++) {
+    for (int j = i + 1; j < numsSize; j++) {
+      int n1 = nums[i];
+      int n2 = nums[j];
+      if (n1 + n2 == target) {
+        result[0] = i;
+        result[1] = j;
+        return result;
+      };
+    };
+  };
+  free(result);
+  *returnSizePtr = 0;
+  return NULL;
+}
+
+int* twoSumHashmapSolution(int* nums, size_t numsSize, int target, size_t* returnSizePtr) {
+  typedef struct {
+    int key;
+    int value;
+    bool used;
+  } HashItem; // bucket == HashItem
+  int hash(int key, size_t size) {
+    if (key < 0) key = -key; // transforming key (which is already in negative form) into positive, example (key = 1): -(-1) == 1
+    return key % size; // Returns a unique index used to locate the bucket in the hash table.
+  };
+  size_t tableSize = numsSize * 2; // Memory must be allocated for twice the number of elements to be mapped in the hash table, for reasons of reliability, stability, and security.
+  HashItem* table = calloc(tableSize, sizeof(HashItem));
+  for (int i = 0; i < numsSize; i++) {
+    int complement = target - nums[i];
+    int idx = hash(complement, tableSize);
+
+    while (table[idx].used) {
+      if (table[idx].key == complement) {
+        int* result = malloc(sizeof(int) * 2);
+        result[0] = table[idx].value;
+        result[1] = i;
+        *returnSizePtr = 2;
+        free(table);
+        return result;
+      };
+      idx = (idx + 1) % tableSize; 
+    }
+
+    idx = hash(nums[i], tableSize);
+    while (table[idx].used) {
+      idx = (idx + 1) % tableSize; // Moves one bucket forward in the hash table.
+    }
+
+    table[idx].key = nums[i];
+    table[idx].value = i;
+    table[idx].used = true;
+  }
+  free(table);
+  *returnSizePtr = 0;
+  return NULL;
+}
+
+int** findDifference(int* nums1, size_t nums1Size, int* nums2, size_t nums2Size, int* returnSize, int** returnColumnSizes) {
+  typedef struct {
+    int key; // is num value
+    bool used;
+  } bucket; // HashItem
+
+  int hash(int key, size_t table_size) {
+    if (key < 0) key = -key;
+    return key % table_size;
+  };
+
+  int contains (bucket* table, size_t size, int target) {
+    int idx = hash(target, size);
+    while (table[idx].used) {
+      if (table[idx].key == target) return true;
+      idx = (idx + 1) % size;
+    };
+    return false;
+  };
+
+  void insert(bucket* table, size_t size, int key) {
+    int idx = hash(key, size);
+    while (table[idx].used) {
+      if (table[idx].key == key) return;
+      idx = (idx + 1) % size;
+    };
+    table[idx].key = key;
+    table[idx].used = true;
+  };
+
+  size_t size1 = nums1Size * 2;
+  size_t size2 = nums2Size * 2;
+
+  bucket* hashtable1 = calloc(size1, sizeof(bucket));
+  bucket* hashtable2 = calloc(size2, sizeof(bucket));
+
+  int* res1 = calloc(nums1Size, sizeof(int));
+  int* res2 = calloc(nums2Size, sizeof(int));
+
+  for (int i = 0; i < nums1Size; i++) insert(hashtable1, size1, nums1[i]);
+  for (int i = 0; i < nums2Size; i++) insert(hashtable2, size2, nums2[i]);
+
+  int c1 = 0, c2 = 0; 
+
+  size_t addedNumsSize = size1 + size2;
+  bucket* addedNums = calloc(addedNumsSize, sizeof(bucket));
+
+  for (int i = 0; i < nums1Size; i++) {
+    if (!contains(hashtable2, size2, nums1[i]) && !contains(addedNums, addedNumsSize, nums1[i])) {
+       res1[c1++] = nums1[i];
+       insert(addedNums, addedNumsSize, nums1[i]); 
+    };
+  };
+
+  for (int i = 0; i < nums2Size; i++) {
+    if (!contains(hashtable1, size1, nums2[i]) && !contains(addedNums, addedNumsSize, nums2[i])) {
+       res2[c2++] = nums2[i];
+       insert(addedNums, addedNumsSize, nums2[i]);
+    };
+  };
+
+  int** answer = malloc(sizeof(int*) * 2);
+  answer[0] = res1;
+  answer[1] = res2;
+  
+  *returnSize = 2;
+
+  *returnColumnSizes = malloc(sizeof(int) * 2);
+  (*returnColumnSizes)[0] = c1;
+  (*returnColumnSizes)[1] = c2;
+  
+  free(hashtable1);
+  hashtable1 = NULL;
+  free(hashtable2);
+  hashtable2 = NULL;
+  return answer;
+}
+
+//int** findDifferecneBt(int* nums1, size_t nums1Size, int* nums2, size_t nums2Size, int* returnSize, int* returnColumnSizes) {};
+
 int main() {
-  int n = 6;
-  int result = fibonacci_number(n);
-  printf("Result: %d\n", result);
+  int nums1[] = {0, 1, 4, 4};
+  int nums2[] = {0, 1, 0, 1};
+  size_t nums1Size = sizeof(nums1) / sizeof(nums1[0]), nums2Size = sizeof(nums2) / sizeof(nums2[0]);
+  int returnSize;
+  int* returnSizePtr = &returnSize;
+  int* returnColumnSizes = NULL;
+  int** returnColumnSizesPtr = &returnColumnSizes;
+  int** result = findDifference(nums1, nums1Size, nums2, nums2Size, returnSizePtr, returnColumnSizesPtr);
+  
+  if (result != NULL) {
+    int i = 0;
+    while (i < *returnSizePtr - 1) {
+      for (int j = 0; j < returnColumnSizes[0]; j++) {
+        printf("%d ", result[i][j]);
+      };
+      i++;
+      printf("\n");
+      for (int k = 0; k < returnColumnSizes[1]; k++) {
+        printf("%d ", result[i][k]);
+      };
+    };
+    printf("\n");
+  };
+  free(result);  
   return 0;
 }
