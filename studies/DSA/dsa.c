@@ -3,6 +3,8 @@
 #include <stdbool.h>
 #include <string.h>
 
+#define ALPHABET_TOTAL 26
+
 // vectors
 int arrays() {
   int array[5] = {1, 2, 3, 4, 5}; /* are contiguous blocks of memory. They have a fixed size, and type of data they 
@@ -134,6 +136,7 @@ struct ListNode {
   int val;
   struct ListNode* next;
 };
+
 struct ListNode* mergeTwoLists(struct ListNode* list1, struct ListNode* list2) {
   struct ListNode *p = list1, *q = list2;
   struct ListNode dummy;
@@ -387,30 +390,102 @@ int** findDifference(int* nums1, size_t nums1Size, int* nums2, size_t nums2Size,
 
 //int** findDifferecneBt(int* nums1, size_t nums1Size, int* nums2, size_t nums2Size, int* returnSize, int* returnColumnSizes) {};
 
-int main() {
-  int nums1[] = {0, 1, 4, 4};
-  int nums2[] = {0, 1, 0, 1};
-  size_t nums1Size = sizeof(nums1) / sizeof(nums1[0]), nums2Size = sizeof(nums2) / sizeof(nums2[0]);
-  int returnSize;
-  int* returnSizePtr = &returnSize;
-  int* returnColumnSizes = NULL;
-  int** returnColumnSizesPtr = &returnColumnSizes;
-  int** result = findDifference(nums1, nums1Size, nums2, nums2Size, returnSizePtr, returnColumnSizesPtr);
-  
-  if (result != NULL) {
-    int i = 0;
-    while (i < *returnSizePtr - 1) {
-      for (int j = 0; j < returnColumnSizes[0]; j++) {
-        printf("%d ", result[i][j]);
-      };
-      i++;
-      printf("\n");
-      for (int k = 0; k < returnColumnSizes[1]; k++) {
-        printf("%d ", result[i][k]);
-      };
-    };
-    printf("\n");
+bool uniqueOccurrences(int* arr, size_t arrSize) {
+  typedef struct {
+    bool used;
+    int key;
+    int count; // occurences
+  } bucket; // hashitem
+  int hash(int key, size_t tablesize) {
+    if (key < 0) key = -key;
+    return key % tablesize;
   };
-  free(result);  
+  size_t tablesize = arrSize * 2;
+  size_t bucketsize = sizeof(bucket);
+  bucket* table = calloc(tablesize, bucketsize);
+  for (int i = 0; i < arrSize; i++) {
+    int val = arr[i];
+    int idx = hash(val, tablesize);
+    while (table[idx].used && table[idx].key != val) {
+      idx = (idx + 1) % tablesize;
+    };
+    if (!table[idx].used) {
+      table[idx].used = true;
+      table[idx].key = val;
+      table[idx].count = 0;
+    };
+    table[idx].count++;
+  };
+
+  bucket* freqMap = calloc(tablesize, bucketsize);
+
+  for (int i = 0; i < tablesize; i++) {
+    if (!table[i].used) continue;
+    int count = table[i].count;
+    int idx = hash(count, tablesize);
+    while (freqMap[idx].used && freqMap[idx].key != count) {
+      idx = (idx + 1) % tablesize;
+    };
+    if (freqMap[idx].used) {
+      free(table);
+      free(freqMap);
+      return false;
+    };
+    freqMap[idx].used = true;
+    freqMap[idx].key = count;
+  };
+  free(table);
+  free(freqMap);
+  return true;
+};
+
+bool closeStrings(char* word1, char* word2) {
+  int cmp(const void* a, const void* b) {
+    const int* x = (const int*)a;
+    const int* y = (const int*)b;
+    return *x - *y;
+  };
+
+  if (strlen(word1) != strlen(word2)) return false;
+
+  int f1[ALPHABET_TOTAL] = {0};
+  int f2[ALPHABET_TOTAL] = {0};
+
+  for (int i = 0; i < strlen(word1); i++) {
+    f1[word1[i] - 'a'] = i;
+    f2[word2[i] - 'a'] = i;
+  };
+
+  for (int i = 0; i < ALPHABET_TOTAL; i++) {
+    if ((f1[i] == 0 && f2[i] != 0) || (f2[i] == 0 && f1[i] != 0)) return false;
+  };
+
+  qsort(f1, ALPHABET_TOTAL, sizeof(int), cmp);
+  qsort(f2, ALPHABET_TOTAL, sizeof(int), cmp);
+
+  for (int i = 0; i < ALPHABET_TOTAL; i++) {
+    if (f1[i] != f2[i]) return false;
+  };
+  
+  return true;
+};
+
+bool canPlaceFlowers(int* flowerbed, size_t flowerbedSize, int n) {
+  for (int i = 0; i < flowerbedSize && n > 0; i++) {
+    bool pos = i == 0 || !flowerbed[i - 1];
+    bool next = i == flowerbedSize - 1 || !flowerbed[i + 1];
+    if (pos && next && !flowerbed[i]) {
+      flowerbed[i] = 1;
+      n = 0;
+    };
+  };
+  return n <= 0;
+}
+
+int main() {
+  int flowerbed[] = {0, 1, 1, 1, 0};
+  size_t flowerbedSize = sizeof(flowerbed) / sizeof(flowerbed[0]);
+  int n = 1;
+  printf("%b\n", canPlaceFlowers(flowerbed, flowerbedSize, n));
   return 0;
 }

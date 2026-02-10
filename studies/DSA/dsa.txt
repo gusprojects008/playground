@@ -1,0 +1,11 @@
+Passo a passo para resolver:
+Duas somas:
+
+Diferenças entre duas listas:
+Criar uma estrutra de dados específica para armazenar uma chave chamada key que está associada ao valor de um número da lista, e uma flag boleana para indicar se essa estrutura dentro de uma tabela, já está sendo usada, essa estrutura é chamada de bucket ou hashitem, ela será usada para mapear cada número das duas listas dadas, lembrando que para cada lista, haverá uma tabela diferente para armazenar os diferentes números de cada lista. 
+
+Criar uma função hash para 
+
+Pode plantar em um canteiro de flores:
+O problema pede para verificarmos se dada uma lista de 0s e 1s que mapeiam partes ocupadas (1s) e não ocupadas (0s) do canteiro de flores, a condição é que, não podemos plantar em áreas adjacêntes, exemplo:
+
