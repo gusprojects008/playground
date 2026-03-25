@@ -1,0 +1,46 @@
+Dominios:
+https://cpadigital.educacao.ba.gov.br/
+https://saga.educacao.ba.gov.br/auth.php
+
+A seres analisados:
+https://saga.educacao.ba.gov.br/includes/public/temas/simec/js/src/util.js
+https://saga.educacao.ba.gov.br/includes/funcoes.js
+
+Email:
+cpa.cja.sec@enova.educacao.ba.gov.br
+
+Backend e Sistema:
+Apache/2.4.37 (Oracle Linux Server) OpenSSL/1.1.1k
+PHP/7.3.33
+
+Meu login:
+Regina Barbosa Merlonetti 31081862807 33787931X O ATIVO 3214
+senha: 310818
+
+CPFs:
+https://midiasstoragesec.blob.core.windows.net/000/2021/01/credenciamento-pei-cat-o-ps-recurso.pdf
+
+req POST cadastro sem captcha:
+no content [200]
+req POST cadastro com captha correto:
+Seu pré-cadastro foi realizado com sucesso. A senha inicial no primeiro acesso é os 6 primeiros dígitos do CPF
+
+O cadastro é aceito por um CPU válido ou com formato válido?
+
+Sites auxiliares utilizados durante os testes:
+https://buscaprime.com.br/
+https://dencode.com/
+https://mazzarello.com.br/noticias/entendendo-a-matematica-por-tras-do-cpf
+https://midiasstoragesec.blob.core.windows.net/001/2021/01/credenciamento-pei-cat-o-ps-recurso.pdf
+
+Possíveis problemas identificados:
+O cadastro inicial pode ser feito através de quaisquer dados forcidos pelo usuário, apenas basta quie sigam o formato válido de acordo com a validação feita por módulos de parse e validação básica (é necessário verificar se esses módulos seguem o padrão do mercado de forma profissional).
+Isso é interessante, pois de certa forma, possívelmente não dá brecha para o usuário varrer CPFs válidos.
+A utilização captcha é importante, e realmente está sendo utilizada, isso é bom, mas acho interessante verificar se há a possibilidade de burlar ela de forma automatizada.
+Após o cadastro, o usuário é informado que a senha dele é os 6 primeiros digitos do próprio CPF.
+Isso mostra que o sistema automaticamente define a senha padrão do usuário utiliando os 6 primeiro digitos do CPF do usuário, após isso ele redireciona o usuário para a página de redefinição de senha, ou seja, esperando a ação do usuário para a redefinição, o que provavelmente não acontece.
+A página de autênticação https://saga.educacao.ba.gov.br/auth.php do sub-domínio "saga" é a página que utiliza o dados de login passado para o usuário durante o cadastro, incluindo senha padrão definida pelo próprio sistema para o usuário, mas nessa página de login não há a exigência de captcha, dessa forma, é possível enumerar login de usuário muito facilmente, através da geração de CPFs válidos, e a utilização dos 6 primeiros digitos deles como senha para testar a autenticação.
+Há outro problema na página de login, é posível inferir usuários ou senhas ativas no sistema, dessa forma, é possível forcar em enumerar senhas padrões ativas de acordo com CPFs ativos, que foram enumerados anteriormente.
+O usuário não pode criar outra conta utilizando um CPF já usado por outro usuário.
+É possível obter a imagem, salvala, e analisa-la, talvez seja possível obter as caracteres a partir dela.
+Idenfiquei que realmente o captacha utilizado é bastante fraco de acordo com os padrões atuais, é possível que manipular o tamanho da imagem e limitar os próprios carcteres dela.
