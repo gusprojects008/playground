@@ -1,0 +1,14 @@
+url:
+https://primobet.bet/
+
+Descrição:
+Site de cassino, jogos de apostas.
+
+Tecnologias que utiliza:
+API do PIX.
+
+Mecanismo interessantes identificados:
+O site impede o uso do console do navgeador para inspecionar a página, ou seja, ele tentar realizar a segurança do site através da obscuridade, não permitindo os usuário verem o funcionamento básico dele. Mas isso é burlavel desabilitando o javascript, voltando a página, e ativando ele novamente.
+
+É possível criar uma conta utilizando informações falsas: CPF, NÚMERO DE TELFONE E EMAIL.
+Não há verificação OTP de número de telefone ou email, para verificar se eles são existentes, válidos e que realmente pertençem ao usuário.
